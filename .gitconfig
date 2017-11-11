@@ -1,0 +1,9 @@
+[user]
+	name = ardenn
+	email = ardenn@users.noreply.github.com
+[color]
+	ui = auto
+[push]
+	default = simple
+[core]
+	excludesfile = /home/rodgers/.gitignore_global
