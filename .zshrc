@@ -93,7 +93,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-[ -f .bash_aliases ] && source .bash_aliases
+#[ -f .bash_aliases ] && 
+source .bash_aliases
 
 #Add to path
 PATH=$PATH:$HOME/Scripts
