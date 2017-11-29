@@ -4,7 +4,7 @@
 for dotfile in `find $HOME/dotfiles/dots`;
 do
     echo "Creating symbolic link for $dotfile"
-    ln -sf $HOME/dotfiles/dots/$dotfile $HOME/$(basename $dotfile)
+    ln -sf $HOME/dotfiles/dots $HOME/$(basename $dotfile)
 done
 
 #Copy files to root home folder
