@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 # Create symlinks in home folder to dotfiles
 for dotfile in `find $HOME/dotfiles/dots`;
