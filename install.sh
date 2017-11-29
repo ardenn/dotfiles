@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Create symlinks in home folder to dotfiles
-for dotfile in `find $HOME/dotfiles/dots`;
+for dotfile in `find $HOME/dotfiles/dots -not -type d`;
 do
     item=$(basename $dotfile)
     echo "Creating symbolic link for $dotfile"
