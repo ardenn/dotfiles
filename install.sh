@@ -8,3 +8,7 @@ do
         ln -sf $HOME/dotfiles/dots/$dotfile $HOME/$(basename $dotfile)
     fi
 done
+
+#Copy files to root home folder
+sudo cp ~/.zshrc /root/
+sudo cp ~/.bashrc /root/
