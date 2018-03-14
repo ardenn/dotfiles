@@ -11,3 +11,4 @@ done
 #Copy files to root home folder
 sudo cp ~/.zshrc /root/
 sudo cp ~/.bashrc /root/
+cp -r ~/dotfiles/custom/ ~/.oh-my-zsh/
