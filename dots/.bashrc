@@ -232,5 +232,11 @@ if ! shopt -oq posix; then
 fi
 
 #Add to path
-PATH=$PATH:$HOME/Scripts
+PATH=$PATH:$HOME/scripts
 PATH=$PATH:$HOME/tools/theHarvester
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# added by travis gem
+[ -f /home/rodgers/.travis/travis.sh ] && source /home/rodgers/.travis/travis.sh
