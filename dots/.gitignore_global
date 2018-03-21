@@ -105,3 +105,8 @@ venv.bak/
 #pycharm 
 .idea/
 
+#Java
+*.class
+
+#vscode
+.vscode/
