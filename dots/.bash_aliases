@@ -17,7 +17,7 @@ alias list='apt list'
 
 #venvs
 alias data='cd ~/mest/projects/data_science && source .env/bin/activate'
-alias datas='cd ~/mest/projects/data_science && source .env/bin/activate && jupyter notebook'
+alias datas='cd ~/mest/projects/data_science && source .env/bin/activate && jupyter lab'
 alias pyqt='cd ~/mest/projects/pyqt && source .env/bin/activate'
 alias tech='cd ~/mest/exercises/python/ && source .env/bin/activate'
 alias flaskr='cd ~/mest/exercises/flask_intro && source .env/bin/activate'
