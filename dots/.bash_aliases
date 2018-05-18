@@ -1,5 +1,4 @@
-#custom aliases
-#Git
+#custom aliases Git
 alias gs='git status'
 alias ga='git add'
 alias gc='git commit'
@@ -14,6 +13,12 @@ alias autoremove='sudo apt autoremove'
 alias upgrade='sudo apt full-upgrade'
 alias show='apt show'
 alias list='apt list'
+
+#systemctl
+alias start='sudo systemctl start'
+alias stop='sudo systemctl stop'
+alias status='sudo systemctl status'
+alias reload='sudo systemctl reload'
 
 #venvs
 alias data='cd ~/mest/projects/data_science && source .env/bin/activate'
