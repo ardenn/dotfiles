@@ -21,10 +21,10 @@
 # Highlight the user name when logged in as root.
 if (($EUID==0)); then
     style='red';
-    sign='!!';
+    sign='✖✖';
 else
-    style='cyan';
-    sign='::';
+    style='blue';
+    sign='✚✚';
 fi;
 # The prompt
 
