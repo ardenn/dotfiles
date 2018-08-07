@@ -61,6 +61,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  yarn
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -93,11 +94,11 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-[ -f .bash_aliases ] && source .bash_aliases
+[ -f /home/rodgers/.bash_aliases ] && source /home/rodgers/.bash_aliases
 
-#Add to path
-PATH=$PATH:$HOME/scripts
-PATH=$PATH:$HOME/tools/theHarvester
+#Export Java and Android environments
+export JAVA_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')
+export ANDROID_HOME=/home/rodgers/android/sdk
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
