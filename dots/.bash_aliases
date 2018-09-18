@@ -16,6 +16,7 @@ alias list='apt list'
 
 #systemctl
 alias start='sudo systemctl start'
+alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
 alias status='sudo systemctl status'
 alias reload='sudo systemctl reload'
@@ -27,18 +28,15 @@ alias data='cd ~/mest/projects/data_science'
 alias datas='cd ~/mest/projects/data_science'
 alias smartscreen='cd ~/mest/projects/mtn/smartscreen'
 alias advancia='cd ~/mest/projects/advancia/advancia'
-alias scraper='cd ~/mest/projects/scraper'
+alias scraper='cd ~/projects/scraper'
 alias qalisi='cd ~/mest/projects/qalisi/server'
 
 #utilities
 alias clean='sudo ~/scripts/mintcleaner.sh'
 alias postman='/opt/Postman/Postman &'
 alias popcorn='/opt/Popcorn/Popcorn-Time &'
-alias bootinfo='sudo /opt/bootscript/bootinfoscript'
-alias elec='/opt/Electron/Electron\ API\ Demos &'
-alias deezer='python3 ~/deezer.py http://www.deezer.com/en/playlist/3473973642'
-alias vectr='/opt/vectr/vectr &'
 
 #quick access
-alias projects='cd ~/mest/projects'
-alias exercises='cd ~/mest/exercises'
+alias mest='cd ~/mest/projects'
+alias projects='cd ~/projects'
+alias exercises='cd ~/exercises'

@@ -109,3 +109,9 @@ export PATH="$PATH:$HOME/.rvm/bin"
 
 # added by travis gem
 [ -f $HOME/.travis/travis.sh ] && source /home/rodgers/.travis/travis.sh
+
+###-tns-completion-start-###
+if [ -f /home/rodgers/.tnsrc ]; then 
+    source /home/rodgers/.tnsrc 
+fi
+###-tns-completion-end-###
