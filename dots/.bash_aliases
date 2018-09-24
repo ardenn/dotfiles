@@ -35,8 +35,10 @@ alias qalisi='cd ~/mest/projects/qalisi/server'
 alias clean='sudo ~/scripts/mintcleaner.sh'
 alias postman='/opt/Postman/Postman &'
 alias popcorn='/opt/Popcorn/Popcorn-Time &'
+alias robo3t='/opt/robo3t/bin/robo3t &'
 
 #quick access
 alias mest='cd ~/mest/projects'
 alias projects='cd ~/projects'
 alias exercises='cd ~/exercises'
+alias learn='cd ~/learning\ centre'
