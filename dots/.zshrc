@@ -116,3 +116,6 @@ if [ -f /home/rodgers/.tnsrc ]; then
     source /home/rodgers/.tnsrc 
 fi
 ###-tns-completion-end-###
+
+## Add yarn global to PATH
+export PATH="$(yarn global bin):$PATH"
