@@ -33,8 +33,6 @@ alias qalisi='cd ~/mest/projects/qalisi/server'
 
 #utilities
 alias clean='sudo ~/scripts/mintcleaner.sh'
-alias postman='/opt/Postman/Postman &'
-alias popcorn='/opt/Popcorn/Popcorn-Time &'
 alias robo3t='/opt/robo3t/bin/robo3t &'
 
 #quick access
