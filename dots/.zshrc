@@ -119,3 +119,6 @@ fi
 
 ## Add yarn global to PATH
 export PATH="$(yarn global bin):$PATH"
+
+## Pipenv
+export PIPENV_VENV_IN_PROJECT=true
