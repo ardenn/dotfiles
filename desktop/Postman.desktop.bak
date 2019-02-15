@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Postman
+Exec=/opt/PostmanCanary/PostmanCanary
+Icon=/opt/PostmanCanary/app/resources/app/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Development;
+X-Desktop-File-Install-Version=0.23
