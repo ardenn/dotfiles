@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # echo "Setting up My Ubuntu ..."
 
 # echo "  Updating the system ..."
@@ -17,12 +17,12 @@
 echo "Begin Installing Apps..."
 
 echo "1. Installing ZSH..."
-sudo apt install zsh
+#sudo apt install zsh
 echo "      Switching to ZSH..."
-chsh -s $(which zsh)
+#chsh -s $(which zsh)
 
 echo "2. Installing oh-my-zsh"
-sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+#sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 
 apps=("tlp","tlp-rdw","gnome-tweak-tool","postgresql","postgresql-contrib","audacious","htop","timeshift","zeal","kazam","gufw")
 COUNTER=3
@@ -63,7 +63,7 @@ COUNTER=$[COUNTER + 1]
 
 echo "$COUNTER. Installing yarn"
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.listsudo apt update
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt update
 sudo apt install -y yarn
 

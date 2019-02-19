@@ -105,20 +105,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# added by travis gem
-[ -f $HOME/.travis/travis.sh ] && source /home/rodgers/.travis/travis.sh
-
-###-tns-completion-start-###
-if [ -f /home/rodgers/.tnsrc ]; then 
-    source /home/rodgers/.tnsrc 
-fi
-###-tns-completion-end-###
-
 ## Add yarn global to PATH
 export PATH="$(yarn global bin):$PATH"
 
-## Pipenv
-export PIPENV_VENV_IN_PROJECT=true
+# Add Flutter to PATH
+export PATH="$PATH:`pwd`/flutter/bin"
