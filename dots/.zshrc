@@ -110,3 +110,12 @@ export PATH="$(yarn global bin):$PATH"
 
 # Add Flutter to PATH
 export PATH="$PATH:`pwd`/flutter/bin"
+
+# Add local bin to PATH
+export PATH="$PATH:/home/rodgers/.local/bin"
+
+# Add Poetry bin to path
+export PATH="$PATH:/home/rodgers/.poetry/bin"
+
+# Add Go to path
+export PATH="$PATH:/usr/local/go/bin"

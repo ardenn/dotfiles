@@ -7,3 +7,5 @@
 	default = simple
 [core]
 	excludesfile = /home/rodgers/.gitignore_global
+[pull]
+	rebase = preserve
