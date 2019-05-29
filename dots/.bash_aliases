@@ -11,6 +11,7 @@ alias gsd='git stash drop'
 alias gb='git branch'
 alias gch='git checkout'
 alias gd='git diff'
+alias gr='git remote'
 
 #apt
 alias install='sudo apt install -y'
