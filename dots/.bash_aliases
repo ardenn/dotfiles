@@ -2,6 +2,15 @@
 alias gs='git status'
 alias ga='git add'
 alias gc='git commit'
+alias gst='git stash'
+alias gsl='git stash list'
+alias gsa='git stash apply'
+alias gss='git stash show -p'
+alias gsp='git stash pop'
+alias gsd='git stash drop'
+alias gb='git branch'
+alias gch='git checkout'
+alias gd='git diff'
 
 #apt
 alias install='sudo apt install -y'
