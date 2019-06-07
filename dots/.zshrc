@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/rodgers/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -94,11 +94,11 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-[ -f /home/rodgers/.bash_aliases ] && source /home/rodgers/.bash_aliases
+[ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
 
 # Export Java and Android environments
 export JAVA_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')
-export ANDROID_HOME=/home/rodgers/android/sdk
+export ANDROID_HOME=$HOME/android/sdk
 # export JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 
 export NVM_DIR="$HOME/.nvm"
@@ -109,13 +109,13 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$(yarn global bin):$PATH"
 
 # Add Flutter to PATH
-export PATH="$PATH:`pwd`/flutter/bin"
+export PATH="$PATH:$HOME/flutter/bin"
 
 # Add local bin to PATH
-export PATH="$PATH:/home/rodgers/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 # Add Poetry bin to path
-export PATH="$PATH:/home/rodgers/.poetry/bin"
+export PATH="$PATH:$HOME/.poetry/bin"
 
 # Add Go to path
 export PATH="$PATH:/usr/local/go/bin"

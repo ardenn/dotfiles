@@ -53,3 +53,6 @@ alias exercises='cd ~/exercises'
 alias learn='cd ~/learning\ centre'
 alias uget='cd ~/Downloads/uget'
 alias codility='cd ~/projects/codility'
+
+# nocorrect
+alias test='nocorrect make test'
