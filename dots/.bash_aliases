@@ -34,12 +34,6 @@ alias reload='sudo systemctl reload'
 #venvs
 alias activate='source ../.env/bin/activate'
 alias activate.='source .env/bin/activate'
-alias data='cd ~/mest/projects/data_science'
-alias datas='cd ~/mest/projects/data_science'
-alias smartscreen='cd ~/mest/projects/mtn/smartscreen'
-alias advancia='cd ~/mest/projects/advancia/advancia'
-alias scraper='cd ~/projects/scraper'
-alias qalisi='cd ~/mest/projects/qalisi/server'
 
 #utilities
 alias clean='sudo ~/scripts/mintcleaner.sh'
@@ -47,12 +41,10 @@ alias robo3t='/opt/robo3t/bin/robo3t &'
 alias ngrok='~/ngrok/ngrok'
 
 #quick access
-alias mest='cd ~/mest/projects'
 alias projects='cd ~/projects'
 alias exercises='cd ~/exercises'
 alias learn='cd ~/learning\ centre'
 alias uget='cd ~/Downloads/uget'
-alias codility='cd ~/projects/codility'
 
 # nocorrect
 alias test='nocorrect make test'
