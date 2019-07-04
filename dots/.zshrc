@@ -110,6 +110,7 @@ export PATH="$(yarn global bin):$PATH"
 
 # Add Flutter to PATH
 export PATH="$PATH:$HOME/flutter/bin"
+export PATH="$PATH":"$HOME/flutter/.pub-cache/bin"
 
 # Add local bin to PATH
 export PATH="$PATH:$HOME/.local/bin"
