@@ -45,6 +45,7 @@ alias projects='cd ~/projects'
 alias exercises='cd ~/exercises'
 alias learn='cd ~/learning\ centre'
 alias uget='cd ~/Downloads/uget'
+alias twiga-start='start postgresql && start rabbitmq-server && start redis-server'
 
 # nocorrect
 alias test='nocorrect make test'
