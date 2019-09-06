@@ -120,3 +120,6 @@ export PATH="$PATH:$HOME/.poetry/bin"
 
 # Add Go to path
 export PATH="$PATH:/usr/local/go/bin"
+
+# Add work clousql scripts to path
+export PATH="$PATH:$HOME/scripts/work"
