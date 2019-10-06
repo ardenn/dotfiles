@@ -97,7 +97,6 @@ source $ZSH/oh-my-zsh.sh
 [ -f $HOME/.bash_aliases ] && source $HOME/.bash_aliases
 
 # Export Java and Android environments
-export JAVA_HOME=$(update-alternatives --query javac | sed -n -e 's/Best: *\(.*\)\/bin\/javac/\1/p')
 export ANDROID_HOME=$HOME/android/sdk
 # export JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 

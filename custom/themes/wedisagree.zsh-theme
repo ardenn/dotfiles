@@ -26,9 +26,15 @@ else
     style='blue';
     sign='✚✚';
 fi;
-# The prompt
-
-PROMPT='%{$fg[cyan]%}[%{$fg[$style]%}$sign%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜%{$reset_color%}'
+# Add prompt for ssh sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  sshsource=`echo ssh:$SSH_CONNECTION | cut -d' ' -f1`;
+  sshcolor='red';
+  PROMPT='%{$fg[cyan]%}[%{$fg[$sshcolor]%}$sshsource%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[cyan]%}[%{$fg[$style]%}$sign%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜%{$reset_color%}';
+else
+  # The prompt
+  PROMPT='%{$fg[cyan]%}[%{$fg[$style]%}$sign%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜%{$reset_color%}'
+fi
 
 # The right-hand prompt
 
