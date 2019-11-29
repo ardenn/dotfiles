@@ -32,8 +32,8 @@ alias status='sudo systemctl status'
 alias reload='sudo systemctl reload'
 
 #venvs
-alias activate='source ../.env/bin/activate'
-alias activate.='source .env/bin/activate'
+alias activate='source ../env/bin/activate'
+alias activate.='source env/bin/activate'
 
 #utilities
 alias clean='sudo ~/scripts/mintcleaner.sh'

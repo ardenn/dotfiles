@@ -62,6 +62,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
   git
   yarn
+  docker
+  docker-compose
 )
 
 source $ZSH/oh-my-zsh.sh
