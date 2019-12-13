@@ -12,6 +12,7 @@ alias gb='git branch'
 alias gch='git checkout'
 alias gd='git diff'
 alias gr='git remote'
+alias gcb='git checkout -b'
 
 #apt
 alias install='sudo apt install -y'
