@@ -124,3 +124,9 @@ export PATH="$PATH:/usr/local/go/bin"
 
 # Add work clousql scripts to path
 export PATH="$PATH:$HOME/scripts/work"
+
+# Set default editor
+export EDITOR=/bin/nano
+
+# Add platform tools to path
+export PATH="$PATH:$HOME/android/sdk/platform-tools"
