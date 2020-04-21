@@ -1,0 +1,7 @@
+[/]
+switch-applications=['<Alt>Tab']
+switch-group=['<Super>Tab']
+switch-applications-backward=['<Shift><Alt>Tab']
+switch-group-backward=['<Shift><Super>Tab']
+switch-to-workspace-up=['<Primary><Alt>Up']
+switch-to-workspace-down=['<Primary><Alt>Down']

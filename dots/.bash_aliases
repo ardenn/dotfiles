@@ -13,6 +13,7 @@ alias gch='git checkout'
 alias gd='git diff'
 alias gr='git remote'
 alias gcb='git checkout -b'
+alias gitme='git config user.name "Rodgers Ouma" && git config user.email "mc_alila@outlook.com"'
 
 #apt
 alias install='sudo apt install -y'
@@ -50,6 +51,7 @@ alias kctl='kubectl'
 alias twiga-start='start postgresql && start rabbitmq-server && start redis-server'
 alias vpn-start='sudo systemctl start wg-quick@wg0'
 alias vpn-stop='sudo systemctl stop wg-quick@wg0'
+alias vpn-status='sudo systemctl status wg-quick@wg0'
 
 # nocorrect
 alias test='nocorrect make test'

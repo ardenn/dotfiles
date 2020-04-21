@@ -120,7 +120,9 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.poetry/bin"
 
 # Add Go to path
+export GOPATH=$HOME/go
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:$GOPATH/bin"
 
 # Add work clousql scripts to path
 export PATH="$PATH:$HOME/scripts/work"
@@ -130,3 +132,4 @@ export EDITOR=/bin/nano
 
 # Add platform tools to path
 export PATH="$PATH:$HOME/android/sdk/platform-tools"
+if [ /usr/bin/kubectl ]; then source <(kubectl completion zsh); fi
