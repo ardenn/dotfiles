@@ -36,7 +36,7 @@ echo "\t${YELLOW}Step 9: Installing dotfiles... ${RESET}\n"
 ./dotfiles/install.sh
 
 echo "\t${YELLOW}Step 10: Installing Apps ...${RESET}\n"
-sudo apt install tlp tlp-rdw postgresql postgresql-contrib htop kazam gufw python3-pip python3-dev curl gnupg
+sudo apt install tlp tlp-rdw postgresql postgresql-contrib htop gufw python3-pip python3-dev curl gnupg
 
 echo "\t${YELLOW}Step 11: Installing virtualenv ...${RESET}\n"
 pip3 install virtualenv
