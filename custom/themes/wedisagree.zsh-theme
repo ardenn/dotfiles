@@ -24,14 +24,15 @@ if (($EUID==0)); then
 else
     style='blue';
 fi;
+sign='✖✖'
 # Add prompt for ssh sessions
 if [[ -n $SSH_CONNECTION ]]; then
   sshsource=`echo ssh:$SSH_CONNECTION | cut -d' ' -f3`;
   sshcolor='red';
-  PROMPT='%{$fg[cyan]%}[%{$fg[$sshcolor]%}ssh:$sshsource%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[cyan]%}[%{$fg[$style]%}$USER%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜ %{$reset_color%}';
+  PROMPT='%{$fg[cyan]%}[%{$fg[$sshcolor]%}ssh:$sshsource%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[cyan]%}[%{$fg[$style]%}$EUID%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜ %{$reset_color%}';
 else
   # The prompt
-  PROMPT='%{$fg[cyan]%}[%{$fg[$style]%}$USER%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜ %{$reset_color%}'
+  PROMPT='%{$fg[cyan]%}[%{$fg[$style]%}$EUID%{$fg[cyan]%}]%{$fg[yellow]%}%{$fg[magenta]%}[%{$fg[yellow]%}%c%{$fg[magenta]%}]%{$fg[yellow]%}:➜ %{$reset_color%}'
 fi
 
 # The right-hand prompt
