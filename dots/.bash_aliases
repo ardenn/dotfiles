@@ -52,6 +52,7 @@ alias twiga-start='start postgresql && start rabbitmq-server && start redis-serv
 alias vpn-start='sudo systemctl start wg-quick@wg0'
 alias vpn-stop='sudo systemctl stop wg-quick@wg0'
 alias vpn-status='sudo systemctl status wg-quick@wg0'
+alias adb='~/android/sdk/platform-tools/adb'
 
 # nocorrect
 alias test='nocorrect make test'

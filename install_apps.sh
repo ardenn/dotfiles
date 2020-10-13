@@ -32,11 +32,14 @@ chsh -s $(which zsh)
 echo "\t${YELLOW}Step 8: Installing oh-my-zsh${RESET}\n"
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 
+echo "\t${YELLOW}Step 9: Installing pyenv... ${RESET}\n"
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
 echo "\t${YELLOW}Step 9: Installing dotfiles... ${RESET}\n"
 ./dotfiles/install.sh
 
 echo "\t${YELLOW}Step 10: Installing Apps ...${RESET}\n"
-sudo apt install tlp tlp-rdw postgresql postgresql-contrib htop gufw python3-pip python3-dev curl gnupg
+sudo apt install python-is-python3 tlp tlp-rdw postgresql postgresql-contrib htop gufw python3-pip python3-dev curl gnupg
 
 echo "\t${YELLOW}Step 11: Installing virtualenv ...${RESET}\n"
 pip3 install virtualenv

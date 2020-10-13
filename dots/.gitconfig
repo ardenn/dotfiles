@@ -1,12 +1,6 @@
 [user]
-	name = ardenn
-	email = ardenn@users.noreply.github.com
-	name = =
-	name = =
-	name = rodgers.ouma@twigafoods.com
-	name = rodgers.ouma@twigafoods.com
 	name = Rodgers Ouma
-	email = rodgers.ouma@twigafoods.com
+	email = rodgers.ouma@twiga.com
 [color]
 	ui = auto
 [push]
@@ -14,4 +8,4 @@
 [core]
 	excludesfile = /home/rodgers/.gitignore_global
 [pull]
-	rebase = preserve
+	rebase = merges
