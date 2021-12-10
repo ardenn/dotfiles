@@ -1,4 +1,4 @@
-#custom aliases Git
+#git
 alias gs='git status'
 alias ga='git add'
 alias gc='git commit'
@@ -13,7 +13,6 @@ alias gch='git checkout'
 alias gd='git diff'
 alias gr='git remote'
 alias gcb='git checkout -b'
-alias gitme='git config user.name "Rodgers Ouma" && git config user.email "mc_alila@outlook.com"'
 
 #apt
 alias install='sudo apt install -y'
@@ -40,3 +39,12 @@ alias activate.='source env/bin/activate'
 #utilities
 alias ngrok='~/ngrok/ngrok'
 alias docker='podman'
+alias ch='chezmoi'
+
+{{- if eq .chezmoi.hostname "rodgers-TFL" }}
+
+# twiga utilities
+alias twiga-start='start postgresql && start rabbitmq-server && start redis-server'
+alias test='nocorrect make test'
+alias gitme='git config user.name "Rodgers Ouma" && git config user.email "mc_alila@outlook.com"'
+{{- end }}
