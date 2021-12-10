@@ -1,0 +1,11 @@
+[user]
+	name = Rodgers Ouma
+	email = rodgers.ouma@twiga.com
+[color]
+	ui = auto
+[push]
+	default = simple
+[core]
+	excludesfile = /home/rodgers/.gitignore_global
+[pull]
+	rebase = merges
