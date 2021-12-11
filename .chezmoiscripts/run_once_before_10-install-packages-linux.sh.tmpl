@@ -1,0 +1,49 @@
+{{- if eq .chezmoi.os "linux" -}}
+{{- if eq .chezmoi.osRelease.idLike "debian" -}}
+#!/bin/sh
+sudo apt update -y
+sudo apt full-upgrade -y
+
+set -eufo pipefail
+
+repositories=(
+    ppa:uget-team/ppa
+    ppa:mc3man/mpv-tests
+)
+packages=(
+    curl
+    git
+    zsh
+    tlp
+    tlp-rdw
+    htop
+    gufw
+    gnupg
+    uget
+    aria2
+    uget-integrator
+    mpv
+)
+
+for repository in ${repositories[@]}; do
+	sudo add-apt-repository -y $repository
+done
+
+sudo apt update
+
+sudo apt install -y ${packages[@]}
+
+{{ if eq .chezmoi.arch "amd64" }}
+trap "rm -rf google-chrome-stable_current_amd64.deb vscode.deb" EXIT
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+wget -O vscode.deb https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-deb-x64
+sudo apt install ./vscode.deb
+
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+echo "deb [arch={{.chezmoi.arch}}] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser
+{{ end }}
+{{- end }}
+{{- end }}
