@@ -1,6 +1,6 @@
 {{- if eq .chezmoi.os "linux" -}}
-{{- if eq .chezmoi.osRelease.idLike "debian" -}}
 #!/bin/sh
+{{- if eq .chezmoi.osRelease.idLike "debian" -}}
 sudo apt update -y
 sudo apt full-upgrade -y
 
@@ -46,4 +46,36 @@ sudo apt update
 sudo apt install brave-browser
 {{ end }}
 {{- end }}
+
+{{if eq .chezmoi.osRelease.id "fedora" -}}
+# Update system
+sudo dnf update -y
+set -eufo pipefail
+
+# Enable 3rd party repositories
+sudo dnf install fedora-workstation-repositories
+sudo dnf config-manager --set-enabled google-chrome
+
+# Install packages
+packages=(
+    curl
+    git
+    zsh
+    tlp
+    tlp-rdw
+    htop
+    gnupg
+    uget
+    aria2
+    google-chrome-stable
+)
+
+sudo dnf install -y ${packages[@]}
+
+# Install vscode
+trap "rm -rf vscode.rpm" EXIT
+wget -O vscode.rpm https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-rpm-x64
+sudo dnf install ./vscode.rpm -y
+
+{{- end}}
 {{- end }}
