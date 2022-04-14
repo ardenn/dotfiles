@@ -72,10 +72,5 @@ packages=(
 
 sudo dnf install -y ${packages[@]}
 
-# Install vscode
-trap "rm -rf vscode.rpm" EXIT
-wget -O vscode.rpm https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-rpm-x64
-sudo dnf install ./vscode.rpm -y
-
 {{- end}}
 {{- end }}
