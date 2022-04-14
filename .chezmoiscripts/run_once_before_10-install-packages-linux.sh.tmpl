@@ -1,6 +1,6 @@
 {{- if eq .chezmoi.os "linux" -}}
 #!/bin/sh
-{{- if eq .chezmoi.osRelease.idLike "debian" -}}
+{{- if eq .chezmoi.osRelease.id "debian" -}}
 sudo apt update -y
 sudo apt full-upgrade -y
 
