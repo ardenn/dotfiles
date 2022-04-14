@@ -4,7 +4,7 @@
 set -e # -e: exit on error
 
 trap 'rm -rf JetBrainsMono-2.242.zip' EXIT
-curl https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
+wget https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
 sudo unzip JetBrainsMono-2.242.zip -d /usr/share/fonts
 
 {{ end }}
