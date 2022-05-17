@@ -14,6 +14,7 @@ alias gd='git diff'
 alias gr='git remote'
 alias gcb='git checkout -b'
 
+{{- if eq .chezmoi.osRelease.id "debian" -}}
 #apt
 alias install='sudo apt install -y'
 alias search='apt search'
@@ -24,6 +25,7 @@ alias autoremove='sudo apt autoremove'
 alias upgrade='sudo apt full-upgrade -y'
 alias show='apt show'
 alias list='apt list'
+{{- end }}
 
 #systemctl
 alias start='sudo systemctl start'

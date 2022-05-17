@@ -23,6 +23,7 @@ packages=(
     aria2
     uget-integrator
     mpv
+    gnome-tweaks
 )
 
 for repository in ${repositories[@]}; do
@@ -55,6 +56,7 @@ set -eufo pipefail
 # Enable 3rd party repositories
 sudo dnf install fedora-workstation-repositories
 sudo dnf config-manager --set-enabled google-chrome
+sudo dnf config-manager --add-repo https://repo.ivpn.net/stable/fedora/generic/ivpn.repo
 
 # Install packages
 packages=(
@@ -69,9 +71,24 @@ packages=(
     aria2
     util-linux-user
     google-chrome-stable
+    gnome-tweaks
+    ivpn-ui
+    ivpn
 )
 
 sudo dnf install -y ${packages[@]}
+
+// Install flatpaks
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+flatpaks=(
+    com.mattjakeman.ExtensionManager
+    org.telegram.desktop
+    de.haeckerfelix.Fragments
+    com.lakoliu.Furtherance
+)
+
+flatpak install flathub ${flatpaks[@]}
 
 {{- end}}
 {{- end }}
