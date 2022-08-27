@@ -78,7 +78,7 @@ packages=(
 
 sudo dnf install -y ${packages[@]}
 
-// Install flatpaks
+# Install flatpaks
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 flatpaks=(
@@ -91,4 +91,8 @@ flatpaks=(
 flatpak install flathub ${flatpaks[@]}
 
 {{- end}}
+
+# Install flyio
+curl -L https://fly.io/install.sh | sh
+
 {{- end }}
