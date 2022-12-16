@@ -1,0 +1,17 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+{{if eq .chezmoi.osRelease.id "fedora" -}}
+# Remove packages
+
+packages=(
+    rhythmbox
+    libreoffice-\*
+    fedora-chromium-config
+)
+
+sudo dnf remove -y ${packages[@]}
+
+{{- end}}
+
+{{- end }}

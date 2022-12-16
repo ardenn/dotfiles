@@ -7,7 +7,6 @@ sudo apt full-upgrade -y
 set -eufo pipefail
 
 repositories=(
-    ppa:uget-team/ppa
     ppa:mc3man/mpv-tests
 )
 packages=(
@@ -19,9 +18,7 @@ packages=(
     htop
     gufw
     gnupg
-    uget
-    aria2
-    uget-integrator
+    openssl
     mpv
     gnome-tweaks
 )
@@ -50,13 +47,13 @@ sudo apt install brave-browser
 
 {{if eq .chezmoi.osRelease.id "fedora" -}}
 # Update system
-sudo dnf upgrade -y
+sudo dnf update -y
 set -eufo pipefail
 
 # Enable 3rd party repositories
 sudo dnf install fedora-workstation-repositories dnf-plugins-core
 sudo dnf config-manager --set-enabled google-chrome
-sudo dnf config-manager --add-repo https://repo.ivpn.net/stable/fedora/generic/ivpn.repo
+sudo dnf config-manager --add-repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo
 
 # Add brave repo
 sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/x86_64/
@@ -81,10 +78,9 @@ packages=(
     util-linux-user
     google-chrome-stable
     gnome-tweaks
-    ivpn-ui
-    ivpn
     brave-browser
     code
+    tailscale
 )
 
 sudo dnf install -y ${packages[@]}
@@ -105,5 +101,21 @@ flatpak install flathub ${flatpaks[@]}
 
 # Install flyio
 curl -L https://fly.io/install.sh | sh
+
+# Start tailscale
+sudo systemctl enable --now tailscaled
+
+# Download mullvad
+{{if eq .chezmoi.osRelease.id "fedora" -}}
+trap "rm -rf mullvad.rpm" EXIT
+wget -O mullvad.rpm https://mullvad.net/download/app/rpm/latest/
+sudo dnf install -y mullvad.rpm
+{{- end}}
+
+{{- if eq .chezmoi.osRelease.id "debian" -}}
+trap "rm -rf mullvad.deb" EXIT
+wget -O mullvad.deb https://mullvad.net/download/app/deb/latest/
+sudo apt install -y mullvad.deb
+{{- end}}
 
 {{- end }}
