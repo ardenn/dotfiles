@@ -1,0 +1,9 @@
+[Unit]
+After=tailscaled.service
+Description=Apply mullvard tailscale nft rules
+
+[Service]
+ExecStart=/usr/local/bin/mvt.sh
+
+[Install]
+WantedBy=default.target

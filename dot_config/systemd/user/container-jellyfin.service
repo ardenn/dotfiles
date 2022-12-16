@@ -28,8 +28,8 @@ ExecStart=/usr/bin/podman run \
 	--publish 8096:8096/tcp \
 	--user 1000:1000 \
 	--userns keep-id \
-	--volume /home/rodgers/jellyfin/cache:/cache:Z \
-	--volume /home/rodgers/jellyfin/config:/config:Z \
+	--volume %h/jellyfin/cache:/cache:Z \
+	--volume %h/jellyfin/config:/config:Z \
 	--mount type=bind,source=/run/media/rodgers/Cinemax/Movies,destination=/media/Movies \
 	--mount type=bind,source=/run/media/rodgers/Cinemax/Series,destination=/media/Series \
 	--mount type=bind,source=/run/media/rodgers/Cinemax/Photos,destination=/media/Photos docker.io/jellyfin/jellyfin:latest

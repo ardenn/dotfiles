@@ -1,0 +1,27 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+set -e # -e: exit on error
+echo "Applying tailscale network rules..."
+sudo cp -L $HOME/.tailscale/tailscale-nft.service /usr/lib/systemd/system/tailscale-nft.service
+sudo cp -L $HOME/.tailscale/mvt.sh /usr/local/bin/mvt.sh
+sudo cp -L $HOME/.tailscale/excludeTraffic.rules /usr/local/bin/excludeTraffic.rules
+
+sudo chmod 744 /usr/local/bin/mvt.sh
+sudo chmod 744 /usr/local/bin/excludeTraffic.rules
+sudo chmod 644 /usr/lib/systemd/system/tailscale-nft.service
+
+
+{{if eq .chezmoi.osRelease.id "fedora" -}}
+echo "Restoring SELinux policy for tailscale network rules service"
+
+sudo restorecon -rv /usr/local/bin/excludeTraffic.rules
+sudo restorecon -rv /usr/local/bin/mvt.sh
+sudo restorecon -rv /usr/lib/systemd/system/tailscale-nft.service
+{{- end}}
+
+echo "Enabling systemctl service ..."
+sudo systemctl daemon-reload
+sudo systemctl enable --now tailscale-nft.service
+
+{{ end }}
