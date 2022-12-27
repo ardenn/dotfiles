@@ -1,0 +1,106 @@
+version: "3.1"
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    security_opt:
+      - label:disable
+    volumes:
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+    volumes:
+      - /home/rodgers/config/sonarr:/config:Z
+      - /run/media/rodgers/Cinemax:/data:z
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+    volumes:
+      - /home/rodgers/config/radarr:/config:Z
+      - /run/media/rodgers/Cinemax:/data:z
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+    volumes:
+      - /home/rodgers/config/prowlarr:/config:Z
+    restart: unless-stopped
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+    devices:
+      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - /home/rodgers/config/jellyfin:/config:Z
+      - /run/media/rodgers/Cinemax:/media:z
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - WEBUI_PORT=8282
+    volumes:
+      - /home/rodgers/config/qbittorent:/config:Z
+      - /run/media/rodgers/Cinemax/downloads:/data/downloads:z
+    restart: unless-stopped
+
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/rodgers/config/syncthing:/config:Z
+      - /run/media/rodgers/Cinemax/Photos:/data/photos:z
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+    restart: unless-stopped
+
+  caddy:
+    image: docker.io/library/caddy:2.6.2
+    container_name: caddy
+    volumes:
+      - /home/rodgers/config/caddy/Caddyfile:/etc/caddy/Caddyfile:z
+      - /home/rodgers/config/caddy/site:/srv:z
+      - /home/rodgers/config/caddy/data:/data:Z
+      - /home/rodgers/config/caddy/config:/config:Z
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+volumes:
+  portainer_data:
