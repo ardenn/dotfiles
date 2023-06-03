@@ -21,6 +21,8 @@ packages=(
     openssl
     mpv
     gnome-tweaks
+    terminator
+    openssh-server
 )
 
 for repository in ${repositories[@]}; do
@@ -73,14 +75,14 @@ packages=(
     tlp-rdw
     htop
     gnupg
-    uget
-    aria2
     util-linux-user
     google-chrome-stable
     gnome-tweaks
     brave-browser
     code
     tailscale
+    terminator
+    openssh-server
 )
 
 sudo dnf install -y ${packages[@]}
