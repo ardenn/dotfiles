@@ -1,0 +1,12 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+set -e # -e: exit on error
+
+echo "You're all set up."
+echo "Check if you need fast bluetooth autoconnect and update /etc/bluetooth/main.conf to:"
+echo "FastConnectable=true"
+echo "ReconnectAttempts=7"
+echo "ReconnectIntervals=1,2,4,8,16,32,64"
+
+{{ end }}
