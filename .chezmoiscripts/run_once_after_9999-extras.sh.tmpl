@@ -13,7 +13,7 @@ echo "Enable ssh service."
 sudo systemctl enable --now sshd
 
 echo "Generate a new ssh key."
-ssh-keygen -t ed25519 && eval "$(ssh-agent -s)" && ssh-add ~/.ssh
+ssh-keygen -t ed25519 && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519
 
 echo "If on a server, enable ports 80 and 443."
 echo "sudo firewall-cmd --add-port=80/tcp --add-port=443/tcp --permanent"
