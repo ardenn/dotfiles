@@ -1,24 +1,11 @@
 [user]
-{{- if eq .chezmoi.hostname "rodgers-PC" }}
 	name = Rodgers Ouma
 	email = mc_alila@outlook.com
-{{- end }}
-{{- if eq .chezmoi.hostname "fedora" }}
-	name = Rodgers Ouma
-	email = mc_alila@outlook.com
-{{- end }}
-{{- if eq .chezmoi.hostname "sycamore" }}
-	name = Rodgers Ouma
-	email = mc_alila@outlook.com
-{{- end }}
-{{- if eq .chezmoi.hostname "rodgers-TFL" }}
-	name = Rodgers Ouma
-	email = rodgers.ouma@twiga.com
-{{- end }}
 [color]
 	ui = auto
 [push]
 	default = simple
+	autoSetupRemote = true
 [core]
 	excludesfile = ~/.gitignore_global
 [pull]
@@ -28,5 +15,3 @@
 [url "ssh://git@github.com/ardenn/"]
 	insteadOf = https://github.com/ardenn/
 	insteadOf = https://ardenn@github.com/ardenn/
-[url "ssh://git@bitbucket.org/twigatechteam/"]
-        insteadOf = https://bitbucket.org/twigatechteam/

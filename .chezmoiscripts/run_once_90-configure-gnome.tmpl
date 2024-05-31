@@ -4,4 +4,6 @@
 # dconf.ini hash: {{ include "dconf.ini" | sha256sum }}
 dconf load / < {{ joinPath .chezmoi.sourceDir "dconf.ini" | quote }}
 
+gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+
 {{ end }}
