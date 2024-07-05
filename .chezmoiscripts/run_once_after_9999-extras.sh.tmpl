@@ -4,19 +4,19 @@
 set -e # -e: exit on error
 
 echo "Configure bluetooth autoconnect for peripherals."
-# sudo tee -a  /etc/bluetooth/main.conf <<< "FastConnectable=true"
-# sudo tee -a  /etc/bluetooth/main.conf <<< "ReconnectAttempts=7"
-# sudo tee -a  /etc/bluetooth/main.conf <<< "ReconnectIntervals=1,2,4,8,16,32,64"
+sudo tee -a  /etc/bluetooth/main.conf <<< "FastConnectable=true"
+sudo tee -a  /etc/bluetooth/main.conf <<< "ReconnectAttempts=7"
+sudo tee -a  /etc/bluetooth/main.conf <<< "ReconnectIntervals=1,2,4,8,16,32,64"
 
 
 echo "Enable ssh service."
-# sudo systemctl enable --now sshd
+sudo systemctl enable --now sshd
 
 echo "Generate a new ssh key."
-# ssh-keygen -t ed25519 && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519
+ssh-keygen -t ed25519 && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519
 
 echo "If on a server, enable ports 80 and 443."
-# echo "sudo firewall-cmd --add-port=80/tcp --add-port=443/tcp --permanent"
+echo "sudo firewall-cmd --add-port=80/tcp --add-port=443/tcp --permanent"
 
 echo "You're all set!"
 echo "If on an Intel laptop install tlp and tlp-rdw from the package manager"
