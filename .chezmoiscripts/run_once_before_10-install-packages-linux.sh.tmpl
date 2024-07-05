@@ -7,8 +7,8 @@ sudo apt full-upgrade -y
 set -eufo pipefail
 
 repositories=(
-    ppa:mc3man/mpv-tests
 )
+
 packages=(
     curl
     git
@@ -19,7 +19,6 @@ packages=(
     openssl
     mpv
     gnome-tweaks
-    terminator
     openssh-server
 )
 
@@ -77,7 +76,6 @@ packages=(
     brave-browser
     code
     tailscale
-    terminator
     openssh-server
 )
 
@@ -92,6 +90,7 @@ flatpaks=(
     de.haeckerfelix.Fragments
     com.github.marhkb.Pods
     hu.irl.cameractrls
+    io.gitlab.news_flash.NewsFlash
 )
 
 flatpak install flathub ${flatpaks[@]}
@@ -116,5 +115,11 @@ trap "rm -rf mullvad.deb" EXIT
 wget -O mullvad.deb https://mullvad.net/download/app/deb/latest/
 sudo apt install -y mullvad.deb
 {{- end}}
+
+# install xh
+curl -sfL https://raw.githubusercontent.com/ducaale/xh/master/install.sh | sh
+
+# install kitty
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
 {{- end }}
