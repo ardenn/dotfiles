@@ -14,7 +14,6 @@ packages=(
     git
     zsh
     htop
-    gufw
     gnupg
     openssl
     mpv
@@ -37,10 +36,6 @@ sudo apt install ./google-chrome-stable_current_amd64.deb
 wget -O vscode.deb https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-deb-x64
 sudo apt install ./vscode.deb
 
-curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-echo "deb [arch={{.chezmoi.arch}}] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-sudo apt update
-sudo apt install brave-browser
 {{ end }}
 {{- end }}
 
@@ -51,12 +46,10 @@ set -eufo pipefail
 
 # Enable 3rd party repositories
 sudo dnf install fedora-workstation-repositories dnf-plugins-core
-sudo dnf config-manager --set-enabled google-chrome
-sudo dnf config-manager --add-repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+sudo dnf config-manager setopt google-chrome.enabled=1
 
-# Add brave repo
-sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/x86_64/
-sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+# add mullvad repo
+sudo dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
 
 # Add vscode repo
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
@@ -73,10 +66,10 @@ packages=(
     util-linux-user
     google-chrome-stable
     gnome-tweaks
-    brave-browser
     code
-    tailscale
     openssh-server
+    mullvad-browser
+    mullvad-vpn
 )
 
 sudo dnf install -y ${packages[@]}
@@ -100,16 +93,6 @@ flatpak install flathub ${flatpaks[@]}
 # Install flyio
 curl -L https://fly.io/install.sh | sh
 
-# Start tailscale
-sudo systemctl enable --now tailscaled
-
-# Download mullvad
-{{if eq .chezmoi.osRelease.id "fedora" -}}
-trap "rm -rf mullvad.rpm" EXIT
-wget -O mullvad.rpm https://mullvad.net/download/app/rpm/latest/
-sudo dnf install -y mullvad.rpm
-{{- end}}
-
 {{- if eq .chezmoi.osRelease.id "debian" -}}
 trap "rm -rf mullvad.deb" EXIT
 wget -O mullvad.deb https://mullvad.net/download/app/deb/latest/
@@ -121,5 +104,8 @@ curl -sfL https://raw.githubusercontent.com/ducaale/xh/master/install.sh | sh
 
 # install kitty
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+
+# install tailscale
+curl -fsSL https://tailscale.com/install.sh | sh
 
 {{- end }}
