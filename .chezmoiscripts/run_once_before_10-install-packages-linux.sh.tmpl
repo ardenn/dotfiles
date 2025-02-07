@@ -68,7 +68,6 @@ packages=(
     gnome-tweaks
     code
     openssh-server
-    mullvad-browser
     mullvad-vpn
 )
 
@@ -89,6 +88,9 @@ flatpaks=(
 flatpak install flathub ${flatpaks[@]}
 
 {{- end}}
+
+# Install brave
+curl -fsS https://dl.brave.com/install.sh | sh
 
 # Install flyio
 curl -L https://fly.io/install.sh | sh
