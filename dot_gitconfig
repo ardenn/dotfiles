@@ -6,6 +6,7 @@
 [push]
 	default = simple
 	autoSetupRemote = true
+	followTags = true
 [core]
 	excludesfile = ~/.gitignore_global
 [pull]
@@ -15,3 +16,23 @@
 [url "ssh://git@github.com/ardenn/"]
 	insteadOf = https://github.com/ardenn/
 	insteadOf = https://ardenn@github.com/ardenn/
+[column]
+	ui = auto
+[branch]
+	sort = -committerdate
+[tag]
+	sort = version:refname
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[rerere]
+	enabled = true
+	autoupdate = true
+[rebase]
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+[merge]
+	conflictstyle = zdiff3
