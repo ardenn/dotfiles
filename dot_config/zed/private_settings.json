@@ -7,6 +7,19 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "ssh_connections": [
+    {
+      "host": "sycamore",
+      "username": "rodgers",
+      "projects": [
+        {
+          "paths": [
+            "/home/rodgers/sycamore"
+          ]
+        }
+      ]
+    }
+  ],
   "icon_theme": "Material Icon Theme",
   "multi_cursor_modifier": "cmd_or_ctrl",
   "minimap": {
@@ -31,5 +44,11 @@
     "mode": "system",
     "light": "One Light",
     "dark": "KTRZ Monokai"
+  },
+  "languages": {
+    "YAML": {
+      "formatter": "language_server",
+      "tab_size": 2
+    }
   }
 }
