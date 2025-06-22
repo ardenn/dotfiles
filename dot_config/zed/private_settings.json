@@ -13,9 +13,7 @@
       "username": "rodgers",
       "projects": [
         {
-          "paths": [
-            "/home/rodgers/sycamore"
-          ]
+          "paths": ["/home/rodgers/sycamore"]
         }
       ]
     }
@@ -50,5 +48,12 @@
       "formatter": "language_server",
       "tab_size": 2
     }
+  },
+  "experimental.theme_overrides": {
+    "editor.background": "#1e2123",
+    "editor.gutter.background": "#1e2123",
+    "panel.background": "#26292c",
+    "tab.active_background": "#1e2123",
+    "toolbar.background": "#1e2123"
   }
 }
