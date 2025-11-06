@@ -29,6 +29,9 @@
       "show_commit_summary": false
     }
   },
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
   "wrap_guides": [120],
   "soft_wrap": "editor_width",
   "base_keymap": "SublimeText",
@@ -41,7 +44,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "KTRZ Monokai"
+    "dark": "Monokai-og"
   },
   "languages": {
     "YAML": {
@@ -49,11 +52,12 @@
       "tab_size": 2
     }
   },
-  "experimental.theme_overrides": {
-    "editor.background": "#1e2123",
-    "editor.gutter.background": "#1e2123",
-    "panel.background": "#26292c",
-    "tab.active_background": "#1e2123",
-    "toolbar.background": "#1e2123"
+  "lsp": {
+    "protobuf-language-server": {
+      "binary": {
+        "path": "buf",
+        "arguments": ["beta", "lsp"]
+      }
+    }
   }
 }
