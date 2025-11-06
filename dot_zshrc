@@ -9,6 +9,15 @@ setopt appendhistory   # Append history to the file (instead of overwriting)
 setopt sharehistory    # Share history across all open zsh sessions
 setopt extendedhistory # Save timestamps and command durations to the history file
 
+# Enable command history search with Up/Down arrows
+# https://coderwall.com/p/jpj_6q/zsh-better-history-searching-with-arrow-keys
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+
 # Export Java and Android environments
 export ANDROID_HOME=$HOME/android/sdk
 # export JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
