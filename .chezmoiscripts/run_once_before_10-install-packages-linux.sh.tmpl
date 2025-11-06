@@ -48,6 +48,9 @@ set -eufo pipefail
 sudo dnf install fedora-workstation-repositories dnf-plugins-core
 sudo dnf config-manager setopt google-chrome.enabled=1
 
+# enable ghostty copr repo
+dnf copr enable scottames/ghostty
+
 # add mullvad repo
 sudo dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
 
@@ -69,6 +72,7 @@ packages=(
     code
     openssh-server
     mullvad-vpn
+    ghostty
 )
 
 sudo dnf install -y ${packages[@]}
@@ -107,10 +111,13 @@ sudo apt install -y mullvad.deb
 # install xh
 curl -sfL https://raw.githubusercontent.com/ducaale/xh/master/install.sh | sh
 
-# install kitty
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-
 # install tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
+
+# install zed
+curl -f https://zed.dev/install.sh | sh
+
+# install starship
+curl -sS https://starship.rs/install.sh | sh
 
 {{- end }}
