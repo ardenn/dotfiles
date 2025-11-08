@@ -8,9 +8,11 @@ right_format = "$all"
 # Replace the '❯' symbol in the prompt with '➜'
 [character]  # The name of the module we are configuring is 'character'
 success_symbol = "[➜](bold green)"  # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+error_symbol = "[➜](bold red)"
 
 # Disable the package module, hiding it from the prompt completely
 [package]
+symbol = "󰏗 "
 disabled = true
 
 [directory]
@@ -22,12 +24,72 @@ format = "[$ssh_symbol$hostname]($style) "
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
 conflicted = "💥"
-ahead = "⬆️${count}"
-behind = "⬇️${count}"
+ahead = "⬆️ ${count}"
+behind = "⬇️ ${count}"
 diverged = "🔀"
 untracked = "🆕"
 stashed = "📦"
 modified = "✏️"
-staged = "✅"
+staged = "➕"
 renamed = "🔁"
 deleted = "🗑️"
+
+[golang]
+symbol = " "
+
+[aws]
+symbol = " "
+
+[bun]
+symbol = " "
+
+[c]
+symbol = " "
+
+[cpp]
+symbol = " "
+
+[cmake]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[deno]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[gcloud]
+symbol = " "
+
+[git_branch]
+symbol = " "
+
+[kotlin]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[nodejs]
+symbol = " "
+
+[os.symbols]
+Android = " "
+Debian = " "
+Fedora = " "
+Redhat = " "
+RedHatEnterprise = " "
+Ubuntu = " "
+Windows = "󰍲 "
+
+[python]
+symbol = " "
+
+[zig]
+symbol = " "
