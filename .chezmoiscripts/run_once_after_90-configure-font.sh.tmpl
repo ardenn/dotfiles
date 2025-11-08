@@ -7,4 +7,9 @@ trap 'rm -rf JetBrainsMono-2.304.zip' EXIT
 wget https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
 sudo unzip JetBrainsMono-2.304.zip -d /usr/share/fonts
 
+# Install Nerd Font Symbols Only for use with Starship prompt
+trap 'rm -rf NerdFontsSymbolsOnly.zip' EXIT
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip
+unzip NerdFontsSymbolsOnly.zip -d ~/.local/share/fonts
+
 {{ end }}
