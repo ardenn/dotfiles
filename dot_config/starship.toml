@@ -3,7 +3,32 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 format = '$username$hostname\[$directory\] $character'
-right_format = "$all"
+right_format = """
+$kubernetes\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$package\
+$golang\
+$python\
+$rust\
+$buf\
+$memory_usage\
+$gcloud\
+$direnv\
+$env_var\
+$custom\
+$sudo\
+$cmd_duration\
+$line_break\
+$jobs\
+$time\
+$status\
+$os\
+$container\
+$shell\
+"""
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character]  # The name of the module we are configuring is 'character'
@@ -37,30 +62,6 @@ deleted = "🗑️"
 [golang]
 symbol = " "
 
-[aws]
-symbol = " "
-
-[bun]
-symbol = " "
-
-[c]
-symbol = " "
-
-[cpp]
-symbol = " "
-
-[cmake]
-symbol = " "
-
-[dart]
-symbol = " "
-
-[deno]
-symbol = " "
-
-[docker_context]
-symbol = " "
-
 [gcloud]
 symbol = " "
 
@@ -70,14 +71,8 @@ symbol = " "
 [kotlin]
 symbol = " "
 
-[lua]
-symbol = " "
-
 [memory_usage]
 symbol = "󰍛 "
-
-[nodejs]
-symbol = " "
 
 [os.symbols]
 Android = " "
@@ -90,6 +85,3 @@ Windows = "󰍲 "
 
 [python]
 symbol = " "
-
-[zig]
-symbol = " "
