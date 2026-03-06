@@ -76,5 +76,9 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 # Disable auto-correction
 unsetopt correct_all
 
+# esp-rs
+if [ -f '$HOME/export-esp.sh' ]; then . '$HOME/export-esp.sh'; fi
+
 # Starship
 eval "$(starship init zsh)"
+

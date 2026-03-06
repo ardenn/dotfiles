@@ -7,30 +7,55 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "collaboration_panel": {
+    "button": false
+  },
+  "restore_on_startup": "empty_tab",
+  "edit_predictions": {
+    "provider": "copilot",
+    "mode": "subtle",
+  },
+  "inlay_hints": {
+    "show_other_hints": false,
+    "show_parameter_hints": false,
+    "show_type_hints": false,
+    "show_value_hints": false,
+    "show_background": false,
+    "enabled": false,
+  },
   "ssh_connections": [
     {
       "host": "sycamore",
       "username": "rodgers",
+      "args": [],
       "projects": [
         {
-          "paths": ["/home/rodgers/sycamore"]
-        }
-      ]
-    }
+          "paths": ["/home/rodgers/sycamore"],
+        },
+      ],
+    },
+    {
+      "host": "172.245.214.251",
+      "username": "ubuntu",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/ubuntu/config"],
+        },
+      ],
+      "nickname": "racknerd",
+    },
   ],
   "icon_theme": "Material Icon Theme",
   "multi_cursor_modifier": "cmd_or_ctrl",
   "minimap": {
-    "show": "never"
+    "show": "never",
   },
   "git": {
     "inline_blame": {
       "enabled": true,
-      "show_commit_summary": false
-    }
-  },
-  "features": {
-    "edit_prediction_provider": "copilot"
+      "show_commit_summary": false,
+    },
   },
   "wrap_guides": [120],
   "soft_wrap": "editor_width",
@@ -39,25 +64,35 @@
   "buffer_font_size": 14.0,
   "buffer_font_family": "JetBrains Mono",
   "buffer_font_features": {
-    "calt": false
+    "calt": false,
   },
   "theme": {
     "mode": "system",
-    "light": "One Light",
+    "light": "Monokai-og",
     "dark": "Monokai-og"
   },
   "languages": {
+    "Rust": {
+      "inlay_hints": {
+        "show_other_hints": true,
+        "show_parameter_hints": true,
+        "show_type_hints": true,
+        "show_value_hints": true,
+        "show_background": true,
+        "enabled": true,
+      },
+    },
     "YAML": {
       "formatter": "language_server",
-      "tab_size": 2
-    }
+      "tab_size": 2,
+    },
   },
   "lsp": {
     "protobuf-language-server": {
       "binary": {
         "path": "buf",
-        "arguments": ["beta", "lsp"]
-      }
-    }
-  }
+        "arguments": ["lsp", "serve"],
+      },
+    },
+  },
 }
