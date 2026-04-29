@@ -7,7 +7,32 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "colorize_brackets": true,
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "agent": {
+    "sidebar_side": "right",
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "right"
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry"
+    },
+    "gemini": {
+      "type": "registry"
+    }
+  },
   "collaboration_panel": {
+    "dock": "right",
     "button": false
   },
   "restore_on_startup": "empty_tab",
