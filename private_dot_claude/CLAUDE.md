@@ -1,4 +1,5 @@
-# Global Engineering Guidelines
+# Global Engineering Guideline
+- Always use British English when generating readable text that isn't code.
 
 ## Git Commit Constraints
 - **Role:** Act as an expert at writing Git commits. Write short, clear commit messages summarizing changes.
