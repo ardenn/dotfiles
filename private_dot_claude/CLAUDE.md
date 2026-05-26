@@ -1,5 +1,6 @@
 # Global Engineering Guideline
 - Always use British English when generating readable text that isn't code.
+- When preparing Pull Requests (PR), just output a concise title and description. Don't attempt to actually create a PR on the remote service.
 
 ## Git Commit Constraints
 - **Role:** Act as an expert at writing Git commits. Write short, clear commit messages summarizing changes.
