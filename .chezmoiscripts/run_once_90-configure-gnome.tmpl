@@ -1,9 +1,28 @@
 {{- if eq .chezmoi.os "linux" -}}
-#!/bin/sh
+#!/bin/bash
+
+# ── colours & helpers ────────────────────────────────────────────────────────
+BOLD='\033[1m'; RESET='\033[0m'
+GREEN='\033[0;32m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'
+step()   { printf "\n${CYAN}${BOLD}[%02d]${RESET} ${BOLD}%s${RESET}\n" "$1" "$2"; }
+ok()     { printf "     ${GREEN}✓${RESET}  %s\n" "$1"; }
+info()   { printf "     ${BLUE}→${RESET}  %s\n" "$1"; }
+
+printf "\n"
+printf "  ${CYAN}┌───────────────────────────────────────────────────┐${RESET}\n"
+printf "  ${CYAN}│${RESET}  🖥  GNOME Desktop Configuration                   ${CYAN}│${RESET}\n"
+printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
 
 # dconf.ini hash: {{ include "dconf.ini" | sha256sum }}
-dconf load / < {{ joinPath .chezmoi.sourceDir "dconf.ini" | quote }}
 
+step 1 "Loading dconf settings"
+dconf load / < {{ joinPath .chezmoi.sourceDir "dconf.ini" | quote }}
+ok "dconf settings applied"
+
+step 2 "Enabling fractional scaling"
 gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+ok "Fractional scaling enabled"
+
+printf "\n  ${BLUE}→${RESET}  Log in to GNOME to activate extensions and apply all settings.\n\n"
 
 {{ end }}

@@ -1,0 +1,61 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+
+# ── colours & helpers ────────────────────────────────────────────────────────
+BOLD='\033[1m'; DIM='\033[2m'; RESET='\033[0m'
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'
+step()   { printf "\n${CYAN}${BOLD}[%02d]${RESET} ${BOLD}%s${RESET}\n" "$1" "$2"; }
+ok()     { printf "     ${GREEN}✓${RESET}  %s\n" "$1"; }
+info()   { printf "     ${BLUE}→${RESET}  %s\n" "$1"; }
+warn()   { printf "     ${YELLOW}⚠${RESET}  %s\n" "$1"; }
+
+printf "\n"
+printf "  ${CYAN}┌───────────────────────────────────────────────────┐${RESET}\n"
+printf "  ${CYAN}│${RESET}  🔌  GNOME Shell Extension Installer               ${CYAN}│${RESET}\n"
+printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
+
+step 1 "Detecting GNOME Shell version"
+GNOME_VERSION=$(gnome-shell --version 2>/dev/null | grep -oE '[0-9]+' | head -1)
+GNOME_VERSION=${GNOME_VERSION:-48}
+info "GNOME Shell ${GNOME_VERSION} detected"
+
+EXT_DIR="$HOME/.local/share/gnome-shell/extensions"
+mkdir -p "$EXT_DIR"
+
+install_extension() {
+    local uuid="$1"
+    local dest="$EXT_DIR/$uuid"
+    if [ -d "$dest" ]; then
+        info "$uuid — already present"
+        return 0
+    fi
+    local url="https://extensions.gnome.org/download-extension/${uuid}.shell-extension.zip?shell_version=${GNOME_VERSION}"
+    local tmp
+    tmp=$(mktemp /tmp/gnome-ext-XXXXXX.zip)
+    if curl -fsL "$url" -o "$tmp"; then
+        mkdir -p "$dest"
+        unzip -q "$tmp" -d "$dest"
+        ok "$uuid"
+    else
+        warn "Could not download $uuid"
+    fi
+    rm -f "$tmp"
+}
+
+step 2 "Installing extensions"
+install_extension "blur-my-shell@aunetx"
+install_extension "dash-to-dock@micxgx.gmail.com"
+install_extension "Vitals@CoreCoding.com"
+install_extension "just-perfection-desktop@just-perfection"
+install_extension "hidetopbar@mathieu.bidon.ca"
+install_extension "clipboard-history@alexsaveau.dev"
+install_extension "fullscreen-to-empty-workspace2@corgijan.dev"
+install_extension "disable-unredirect@exeos"
+install_extension "Bluetooth-Battery-Meter@maniacx.github.com"
+install_extension "caffeine@patapon.info"
+install_extension "tailscale-status@maxgallup.github.com"
+install_extension "window-thumbnails@G-dH.github.com"
+
+printf "\n  ${GREEN}${BOLD}Extensions installed. They will activate on first GNOME login.${RESET}\n\n"
+
+{{ end }}
