@@ -1,25 +1,84 @@
 {{- if eq .chezmoi.os "linux" -}}
-#!/bin/sh
+#!/bin/bash
 
-set -e # -e: exit on error
+# ── colours & helpers ────────────────────────────────────────────────────────
+BOLD='\033[1m'; DIM='\033[2m'; RESET='\033[0m'
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'
+step()   { printf "\n${CYAN}${BOLD}[%02d]${RESET} ${BOLD}%s${RESET}\n" "$1" "$2"; }
+ok()     { printf "     ${GREEN}✓${RESET}  %s\n" "$1"; }
+info()   { printf "     ${BLUE}→${RESET}  %s\n" "$1"; }
+warn()   { printf "     ${YELLOW}⚠${RESET}  %s\n" "$1"; }
 
-echo "Configure bluetooth autoconnect for peripherals."
-sudo tee -a  /etc/bluetooth/main.conf <<< "FastConnectable=true"
-sudo tee -a  /etc/bluetooth/main.conf <<< "ReconnectAttempts=7"
-sudo tee -a  /etc/bluetooth/main.conf <<< "ReconnectIntervals=1,2,4,8,16,32,64"
+printf "\n"
+printf "  ${CYAN}╔═══════════════════════════════════════════════════════╗${RESET}\n"
+printf "  ${CYAN}║${RESET}                                                       ${CYAN}║${RESET}\n"
+printf "  ${CYAN}║${RESET}  ${BOLD}~/dotfiles${RESET}  ·  System Configuration                  ${CYAN}║${RESET}\n"
+printf "  ${CYAN}║${RESET}  ${DIM}Final setup steps${RESET}                                     ${CYAN}║${RESET}\n"
+printf "  ${CYAN}║${RESET}                                                       ${CYAN}║${RESET}\n"
+printf "  ${CYAN}╚═══════════════════════════════════════════════════════╝${RESET}\n\n"
 
+set -e
 
-echo "Enable ssh service."
+# ── self-running steps ────────────────────────────────────────────────────────
+
+step 1 "Configuring Bluetooth fast connect & auto-reconnect"
+sudo tee -a /etc/bluetooth/main.conf <<< "FastConnectable=true"
+sudo tee -a /etc/bluetooth/main.conf <<< "ReconnectAttempts=7"
+sudo tee -a /etc/bluetooth/main.conf <<< "ReconnectIntervals=1,2,4,8,16,32,64"
+ok "Bluetooth reconnect settings applied"
+
+step 2 "Enabling SSH service"
 sudo systemctl enable --now sshd
+ok "sshd enabled and running"
 
-echo "Generate a new ssh key."
-ssh-keygen -t ed25519 && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519
+step 3 "Generating SSH keypair (ed25519)"
+if [ -f "$HOME/.ssh/id_ed25519" ]; then
+    info "SSH key already exists at ~/.ssh/id_ed25519 — skipping"
+else
+    ssh-keygen -t ed25519 -C "$(hostname)" -N "" -f "$HOME/.ssh/id_ed25519"
+    ok "Key generated: ~/.ssh/id_ed25519"
+fi
 
-echo "If on a server, enable ports 80 and 443."
-echo "sudo firewall-cmd --add-port=80/tcp --add-port=443/tcp --permanent"
+step 4 "Adding SSH public key to GitHub"
+if gh auth status &>/dev/null 2>&1; then
+    gh ssh-key add "$HOME/.ssh/id_ed25519.pub" --title "$(hostname)"
+    ok "SSH key added to GitHub as '$(hostname)'"
+else
+    warn "gh is not authenticated — key not added yet"
+    info "Run after setup:  gh auth login"
+    info "Then:             gh ssh-key add ~/.ssh/id_ed25519.pub --title \"\$(hostname)\""
+fi
 
-echo "You're all set!"
-echo "If on an Intel laptop install tlp and tlp-rdw from the package manager"
-echo "If on an AMD Laptop, check if you need to install power-profiles-daemon, it could already be installed"
+step 5 "Configuring power management"
+info "AC: no sleep on idle (screen lock only)"
+info "Battery: suspend on idle"
+info "Power button: suspend"
+info "(These preferences are also captured in dconf.ini)"
+
+# ── session-dependent steps (deferred) ───────────────────────────────────────
+
+step 6 "SSH agent — register key (requires active session)"
+warn "Cannot run in this context — execute manually after login:"
+info "  eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519"
+
+# ── post-install checklist ────────────────────────────────────────────────────
+
+printf "\n"
+printf "  ${CYAN}${BOLD}╔═══════════════════════════════════════════════════════╗${RESET}\n"
+printf "  ${CYAN}${BOLD}║${RESET}  📋  POST-INSTALL CHECKLIST                           ${CYAN}${BOLD}║${RESET}\n"
+printf "  ${CYAN}${BOLD}╚═══════════════════════════════════════════════════════╝${RESET}\n"
+printf "  ${DIM}Complete these steps on first login:${RESET}\n\n"
+printf "  [ ]  eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519\n"
+printf "  [ ]  gh auth login\n"
+printf "  [ ]  gh ssh-key add ~/.ssh/id_ed25519.pub --title \"\$(hostname)\"\n"
+printf "  [ ]  sudo tailscale up\n"
+printf "  [ ]  mount /media/rodgers/nfs/sycamore  (after Tailscale is up)\n"
+printf "  [ ]  Copy KeePassXC database from cloud storage\n"
+printf "  [ ]  Sign in to Mullvad VPN\n"
+printf "  [ ]  Sign in to Google Chrome\n"
+printf "  [ ]  Log out and back in  —  ZSH activates as default shell\n"
+printf "  [ ]  Log in to GNOME     —  extensions activate on first session\n"
+printf "\n"
+printf "  ${GREEN}${BOLD}Setup complete. Welcome back.${RESET}\n\n"
 
 {{ end }}

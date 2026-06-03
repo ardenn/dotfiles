@@ -1,15 +1,40 @@
 {{- if eq .chezmoi.os "linux" -}}
-#!/bin/sh
+#!/bin/bash
 
-set -e # -e: exit on error
+# ── colours & helpers ────────────────────────────────────────────────────────
+BOLD='\033[1m'; DIM='\033[2m'; RESET='\033[0m'
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'
+step()   { printf "\n${CYAN}${BOLD}[%02d]${RESET} ${BOLD}%s${RESET}\n" "$1" "$2"; }
+ok()     { printf "     ${GREEN}✓${RESET}  %s\n" "$1"; }
+info()   { printf "     ${BLUE}→${RESET}  %s\n" "$1"; }
+warn()   { printf "     ${YELLOW}⚠${RESET}  %s\n" "$1"; }
 
-trap 'rm -rf JetBrainsMono-2.304.zip' EXIT
-wget https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip
-sudo unzip JetBrainsMono-2.304.zip -d /usr/share/fonts
+printf "\n"
+printf "  ${CYAN}┌───────────────────────────────────────────────────┐${RESET}\n"
+printf "  ${CYAN}│${RESET}  🔤  Font Installer                                ${CYAN}│${RESET}\n"
+printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
 
-# Install Nerd Font Symbols Only for use with Starship prompt
-trap 'rm -rf NerdFontsSymbolsOnly.zip' EXIT
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip
-unzip NerdFontsSymbolsOnly.zip -d ~/.local/share/fonts
+set -e
+
+step 1 "Installing JetBrains Mono"
+JETBRAINS_ZIP=/tmp/JetBrainsMono-2.304.zip
+curl -fsSL https://download.jetbrains.com/fonts/JetBrainsMono-2.304.zip -o "$JETBRAINS_ZIP"
+sudo unzip -q "$JETBRAINS_ZIP" -d /usr/share/fonts
+rm -f "$JETBRAINS_ZIP"
+ok "JetBrains Mono installed to /usr/share/fonts"
+
+step 2 "Installing Nerd Fonts Symbols Only"
+NERD_ZIP=/tmp/NerdFontsSymbolsOnly.zip
+curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/NerdFontsSymbolsOnly.zip -o "$NERD_ZIP"
+mkdir -p ~/.local/share/fonts
+unzip -q "$NERD_ZIP" -d ~/.local/share/fonts
+rm -f "$NERD_ZIP"
+ok "Nerd Fonts Symbols installed to ~/.local/share/fonts"
+
+step 3 "Rebuilding font cache"
+fc-cache -f
+ok "Font cache updated"
+
+printf "\n  ${GREEN}${BOLD}Fonts ready.${RESET}\n\n"
 
 {{ end }}

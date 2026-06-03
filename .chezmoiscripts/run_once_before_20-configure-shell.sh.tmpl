@@ -1,8 +1,25 @@
 {{- if eq .chezmoi.os "linux" -}}
-#!/bin/sh
+#!/bin/bash
 
-set -e # -e: exit on error
+# ── colours & helpers ────────────────────────────────────────────────────────
+BOLD='\033[1m'; RESET='\033[0m'
+GREEN='\033[0;32m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'
+step()   { printf "\n${CYAN}${BOLD}[%02d]${RESET} ${BOLD}%s${RESET}\n" "$1" "$2"; }
+ok()     { printf "     ${GREEN}✓${RESET}  %s\n" "$1"; }
+info()   { printf "     ${BLUE}→${RESET}  %s\n" "$1"; }
 
-chsh -s $(which zsh)
+printf "\n"
+printf "  ${CYAN}┌───────────────────────────────────────────────────┐${RESET}\n"
+printf "  ${CYAN}│${RESET}  🐚  Shell Configuration                           ${CYAN}│${RESET}\n"
+printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
+
+set -e
+
+step 1 "Setting ZSH as default shell"
+chsh -s "$(which zsh)"
+ok "Default shell set to $(which zsh)"
+info "Takes effect on next login"
+
+printf "\n"
 
 {{ end }}
