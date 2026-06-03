@@ -22,11 +22,11 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# fzf — fuzzy history search (Ctrl+R), file picker (Ctrl+T), cd picker (Alt+C)
+# fzf - fuzzy history search (Ctrl+R), file picker (Ctrl+T), cd picker (Alt+C)
 [ -f /usr/share/fzf/shell/key-bindings.zsh ] && source /usr/share/fzf/shell/key-bindings.zsh
 [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 
-# zoxide — frecency-based smart cd; use z <partial> to jump
+# zoxide - frecency-based smart cd; use z <partial> to jump
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
 # Export Java and Android environments
@@ -88,4 +88,3 @@ if [ -f '$HOME/export-esp.sh' ]; then . '$HOME/export-esp.sh'; fi
 
 # Starship
 eval "$(starship init zsh)"
-

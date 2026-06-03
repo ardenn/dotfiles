@@ -33,7 +33,7 @@ ok "sshd enabled and running"
 
 step 3 "Generating SSH keypair (ed25519)"
 if [ -f "$HOME/.ssh/id_ed25519" ]; then
-    info "SSH key already exists at ~/.ssh/id_ed25519 — skipping"
+    info "SSH key already exists at ~/.ssh/id_ed25519 - skipping"
 else
     ssh-keygen -t ed25519 -C "$(hostname)" -N "" -f "$HOME/.ssh/id_ed25519"
     ok "Key generated: ~/.ssh/id_ed25519"
@@ -44,7 +44,7 @@ if gh auth status &>/dev/null 2>&1; then
     gh ssh-key add "$HOME/.ssh/id_ed25519.pub" --title "$(hostname)"
     ok "SSH key added to GitHub as '$(hostname)'"
 else
-    warn "gh is not authenticated — key not added yet"
+    warn "gh is not authenticated - key not added yet"
     info "Run after setup:  gh auth login"
     info "Then:             gh ssh-key add ~/.ssh/id_ed25519.pub --title \"\$(hostname)\""
 fi
@@ -57,8 +57,8 @@ info "(These preferences are also captured in dconf.ini)"
 
 # ── session-dependent steps (deferred) ───────────────────────────────────────
 
-step 6 "SSH agent — register key (requires active session)"
-warn "Cannot run in this context — execute manually after login:"
+step 6 "SSH agent - register key (requires active session)"
+warn "Cannot run in this context - execute manually after login:"
 info "  eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519"
 
 # ── post-install checklist ────────────────────────────────────────────────────
@@ -76,8 +76,8 @@ printf "  [ ]  mount /media/rodgers/nfs/sycamore  (after Tailscale is up)\n"
 printf "  [ ]  Copy KeePassXC database from cloud storage\n"
 printf "  [ ]  Sign in to Mullvad VPN\n"
 printf "  [ ]  Sign in to Google Chrome\n"
-printf "  [ ]  Log out and back in  —  ZSH activates as default shell\n"
-printf "  [ ]  Log in to GNOME     —  extensions activate on first session\n"
+printf "  [ ]  Log out and back in  -  ZSH activates as default shell\n"
+printf "  [ ]  Log in to GNOME     -  extensions activate on first session\n"
 printf "\n"
 printf "  ${GREEN}${BOLD}Setup complete. Welcome back.${RESET}\n\n"
 

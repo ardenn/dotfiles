@@ -27,20 +27,20 @@ The install runs a sequence of scripts in order:
 | 7 | `after_90` | Installs JetBrains Mono and Nerd Fonts Symbols |
 | 8 | `after_91` | Registers the sycamore NFS share in `/etc/fstab` |
 | 9 | `after_9999` | Configures Bluetooth, SSH, generates an ed25519 keypair |
-| — | `run_once_90` | Loads dconf settings and enables fractional scaling |
+| - | `run_once_90` | Loads dconf settings and enables fractional scaling |
 
 ## What's managed
 
-- **Shell** — ZSH config, aliases, Starship prompt
-- **Editors** — Zed settings
-- **Terminals** — Kitty, Ghostty, Terminator
-- **Git** — `~/.gitconfig`, global `.gitignore`
-- **GNOME** — dconf settings (extensions, fonts, input, power, night light, keybindings)
-- **GNOME extensions** — 12 extensions auto-installed and configured
-- **Containers** — rootless Podman networking via `pasta`
-- **Network** — Tailscale + Mullvad VPN nftables rules
-- **Media** — mpv hardware decode config
-- **Audio** — WirePlumber UCM override
+- **Shell** - ZSH config, aliases, Starship prompt
+- **Editors** - Zed settings
+- **Terminals** - Kitty, Ghostty, Terminator
+- **Git** - `~/.gitconfig`, global `.gitignore`
+- **GNOME** - dconf settings (extensions, fonts, input, power, night light, keybindings)
+- **GNOME extensions** - 12 extensions auto-installed and configured
+- **Containers** - rootless Podman networking via `pasta`
+- **Network** - Tailscale + Mullvad VPN nftables rules
+- **Media** - mpv hardware decode config
+- **Audio** - WirePlumber UCM override
 
 ## Post-install checklist
 
@@ -54,7 +54,7 @@ sudo tailscale up
 mount /media/rodgers/nfs/sycamore   # after Tailscale is connected
 ```
 
-Then log out and back in — ZSH activates as the default shell and GNOME extensions load on first session.
+Then log out and back in - ZSH activates as the default shell and GNOME extensions load on first session.
 
 ## Keeping things current
 

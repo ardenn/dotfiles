@@ -25,7 +25,7 @@ jobs:
 
       - name: Dry-run apply
         # Renders all templates against a real Fedora environment and shows
-        # what files would be created — fails if any template has errors
+        # what files would be created - fails if any template has errors
         run: chezmoi apply --dry-run --source="$GITHUB_WORKSPACE"
 
   # ── Shell script linting ──────────────────────────────────────────────────

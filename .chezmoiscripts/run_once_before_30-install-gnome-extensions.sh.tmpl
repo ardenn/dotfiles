@@ -26,7 +26,7 @@ install_extension() {
     local uuid="$1"
     local dest="$EXT_DIR/$uuid"
     if [ -d "$dest" ]; then
-        info "$uuid — already present"
+        info "$uuid - already present"
         return 0
     fi
     local url="https://extensions.gnome.org/download-extension/${uuid}.shell-extension.zip?shell_version=${GNOME_VERSION}"

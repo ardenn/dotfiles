@@ -23,7 +23,7 @@ ok "Mount point ready: ${MOUNT_POINT}"
 
 step 2 "Registering fstab entry"
 if grep -qF "sycamore:/mnt/storage" /etc/fstab; then
-    info "Entry already present in /etc/fstab — skipping"
+    info "Entry already present in /etc/fstab - skipping"
 else
     echo "$FSTAB_ENTRY" | sudo tee -a /etc/fstab > /dev/null
     ok "Entry added to /etc/fstab"
