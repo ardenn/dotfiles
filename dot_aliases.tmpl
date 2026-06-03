@@ -17,8 +17,14 @@ alias gcb='git checkout -b'
 # same as gcb but with the modern git switch command
 alias gsc='git switch -c'
 
-{{- if eq .chezmoi.osRelease.id "debian" -}}
-#apt
+# directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+{{- if eq .chezmoi.osRelease.id "debian" }}
+# apt
 alias install='sudo apt install -y'
 alias search='apt search'
 alias update='sudo apt update'
@@ -30,16 +36,27 @@ alias show='apt show'
 alias list='apt list'
 {{- end }}
 
-#systemctl
+{{- if eq .chezmoi.osRelease.id "fedora" }}
+# dnf
+alias install='sudo dnf install -y'
+alias search='dnf search'
+alias update='sudo dnf update -y'
+alias remove='sudo dnf remove'
+alias autoremove='sudo dnf autoremove'
+alias upgrade='sudo dnf upgrade -y'
+alias show='dnf info'
+{{- end }}
+
+# systemctl
 alias start='sudo systemctl start'
 alias restart='sudo systemctl restart'
 alias stop='sudo systemctl stop'
 alias status='sudo systemctl status'
 alias reload='sudo systemctl reload'
 
-#utilities
+# utilities
 alias docker='podman'
 alias cz='chezmoi'
-alias code='code --ozone-platform=wayland'
 alias http='xh'
 alias fw='sudo ~/tools/framework_tool --driver portio'
+alias dconf-export='dconf dump / > {{ .chezmoi.sourceDir }}/dconf.ini && echo "dconf.ini updated — review: git -C {{ .chezmoi.sourceDir }} diff dconf.ini"'
