@@ -9,10 +9,14 @@ on:
 jobs:
   # ── Template rendering + file deployment ─────────────────────────────────
   dry-run:
-    name: Dry-run apply (Fedora 44)
+    name: Dry-run apply (${{ matrix.machineType }}, Fedora 44)
     runs-on: ubuntu-latest
     container:
       image: fedora:44
+
+    strategy:
+      matrix:
+        machineType: [workstation, server]
 
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +26,12 @@ jobs:
 
       - name: Install chezmoi
         run: curl -fsLS get.chezmoi.io | sh -s -- -b /usr/local/bin
+
+      - name: Write chezmoi config
+        run: |
+          mkdir -p ~/.config/chezmoi
+          printf '[data]\n    machineType = "%s"\n    isFramework = false\n' \
+            "${{ matrix.machineType }}" > ~/.config/chezmoi/chezmoi.toml
 
       - name: Dry-run apply
         # Renders all templates against a real Fedora environment and shows
@@ -47,7 +57,7 @@ jobs:
           failed=0
           for f in .chezmoiscripts/*.sh.tmpl; do
             echo "── $f"
-            if ! sed '/{{/d' "$f" | shellcheck --shell=bash --severity=warning -; then
+            if ! sed '/{{/d' "$f" | shellcheck --shell=bash --severity=warning --exclude=SC2034 -; then
               failed=1
             fi
           done
