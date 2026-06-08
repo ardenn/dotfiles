@@ -73,6 +73,11 @@ sudo dnf install -y fedora-workstation-repositories dnf-plugins-core
 sudo dnf config-manager setopt google-chrome.enabled=1
 sudo dnf copr enable -y scottames/ghostty
 sudo dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
+if [[ "$(cat /sys/class/dmi/id/sys_vendor 2>/dev/null)" == *"Framework"* ]]; then
+    sudo dnf install -y --nogpgcheck \
+        --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' \
+        terra-release
+fi
 ok "Repositories enabled"
 
 packages=(
@@ -95,6 +100,9 @@ packages=(
 
 step 3 "Installing packages"
 sudo dnf install -y "${packages[@]}"
+if [[ "$(cat /sys/class/dmi/id/sys_vendor 2>/dev/null)" == *"Framework"* ]]; then
+    sudo dnf install -y framework-system
+fi
 ok "Packages installed"
 
 flatpaks=(
