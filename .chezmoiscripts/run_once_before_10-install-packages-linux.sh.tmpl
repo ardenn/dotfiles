@@ -97,6 +97,7 @@ base_packages=(
     gnupg
     util-linux-user
     openssh-server
+    bat
 )
 
 step 3 "Installing packages"
@@ -148,11 +149,27 @@ ok "Flatpaks installed"
 server_packages=(
     nfs-utils
     fail2ban
+    delta
+    cockpit
+    cockpit-networkmanager
+    cockpit-storage
+    cockpit-selinux
+    smartmontools
+    rsync
 )
 
 step 4 "Installing server packages"
 sudo dnf install -y "${server_packages[@]}"
 ok "Server packages installed"
+
+step 5 "Installing Docker Compose (podman-compatible)"
+COMPOSE_VERSION="v5.0.1"
+ARCH="$(uname -m)"
+mkdir -p "$HOME/.local/bin"
+curl -fsSL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-${ARCH}" \
+    -o "$HOME/.local/bin/docker-compose"
+chmod +x "$HOME/.local/bin/docker-compose"
+ok "Docker Compose ${COMPOSE_VERSION} installed"
 
 {{- end }}
 
