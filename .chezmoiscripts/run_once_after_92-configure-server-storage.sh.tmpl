@@ -1,0 +1,64 @@
+{{- if eq .machineType "server" -}}
+#!/bin/bash
+
+# ── colours & helpers ────────────────────────────────────────────────────────
+BOLD='\033[1m'; RESET='\033[0m'
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'
+step()   { printf "\n${CYAN}${BOLD}[%02d]${RESET} ${BOLD}%s${RESET}\n" "$1" "$2"; }
+ok()     { printf "     ${GREEN}✓${RESET}  %s\n" "$1"; }
+info()   { printf "     ${BLUE}→${RESET}  %s\n" "$1"; }
+warn()   { printf "     ${YELLOW}⚠${RESET}  %s\n" "$1"; }
+
+printf "\n"
+printf "  ${CYAN}┌───────────────────────────────────────────────────┐${RESET}\n"
+printf "  ${CYAN}│${RESET}  💾  Server Storage Configuration                 ${CYAN}│${RESET}\n"
+printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
+
+set -e
+
+# ── fstab entries ─────────────────────────────────────────────────────────────
+
+DISK1_ID="ata-ST2000DM008-2UB102_WFL6AY1C-part1"
+DISK2_ID="ata-WDC_WD121KRYZ-01W0RB0_5PJRPUZE-part1"
+
+FSTAB_DISK1="/dev/disk/by-id/${DISK1_ID} /mnt/disk1 ext4 defaults 0 0"
+FSTAB_DISK2="/dev/disk/by-id/${DISK2_ID} /mnt/disk2 btrfs defaults 0 0"
+FSTAB_MERGE="/mnt/disk1:/mnt/disk2 /mnt/storage mergerfs cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false 0 0"
+
+step 1 "Creating mount points"
+sudo mkdir -p /mnt/disk1 /mnt/disk2 /mnt/storage
+ok "Mount points ready: /mnt/disk1, /mnt/disk2, /mnt/storage"
+
+step 2 "Registering fstab entries"
+for entry in "$FSTAB_DISK1" "$FSTAB_DISK2" "$FSTAB_MERGE"; do
+    key=$(echo "$entry" | awk '{print $1}')
+    if grep -qF "$key" /etc/fstab; then
+        info "Already present: $key"
+    else
+        echo "$entry" | sudo tee -a /etc/fstab > /dev/null
+        ok "Added: $key"
+    fi
+done
+
+# ── NFS exports ───────────────────────────────────────────────────────────────
+
+EXPORTS_ENTRY="/mnt/storage 100.64.0.0/10(rw,sync,no_subtree_check,fsid=1) 192.168.1.0/24(rw,sync,no_subtree_check,fsid=1) 192.168.2.0/24(rw,sync,no_subtree_check,fsid=1)"
+
+step 3 "Configuring NFS exports"
+if grep -qF "/mnt/storage" /etc/exports 2>/dev/null; then
+    info "/mnt/storage already in /etc/exports - skipping"
+else
+    echo "$EXPORTS_ENTRY" | sudo tee -a /etc/exports > /dev/null
+    ok "NFS export added"
+fi
+
+step 4 "Enabling NFS server"
+sudo systemctl enable --now nfs-server.service
+sudo exportfs -ra
+ok "NFS server active"
+
+printf "\n  ${YELLOW}⚠${RESET}  Disks must be present and partitioned before mounting.\n"
+printf "  ${BLUE}→${RESET}  To mount all: ${BOLD}sudo mount -a${RESET}\n"
+printf "  ${BLUE}→${RESET}  To verify exports: ${BOLD}sudo exportfs -v${RESET}\n\n"
+
+{{- end }}
