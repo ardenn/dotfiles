@@ -65,6 +65,24 @@ warn "Cannot run in this context - execute manually after login:"
 info "  eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519"
 {{- end }}
 
+{{- if eq .machineType "server" }}
+step 5 "Enabling user linger (user services start at boot)"
+loginctl enable-linger "$USER"
+ok "Linger enabled for $USER"
+
+step 6 "Enabling podman socket (rootless container API)"
+systemctl --user enable --now podman.socket
+ok "podman.socket enabled"
+
+step 7 "Enabling Cockpit"
+sudo systemctl enable --now cockpit.socket
+ok "Cockpit enabled"
+
+step 8 "Enabling fail2ban"
+sudo systemctl enable --now fail2ban
+ok "fail2ban enabled"
+{{- end }}
+
 # ── post-install checklist ────────────────────────────────────────────────────
 
 printf "\n"
@@ -84,8 +102,9 @@ printf "  [ ]  Sign in to Google Chrome\n"
 printf "  [ ]  Log out and back in  -  ZSH activates as default shell\n"
 printf "  [ ]  Log in to GNOME     -  extensions activate on first session\n"
 {{- else }}
-printf "  [ ]  Verify NFS exports:  sudo exportfs -v\n"
-printf "  [ ]  Verify fail2ban:     sudo systemctl status fail2ban\n"
+printf "  [ ]  sudo mount -a  (after storage script runs)\n"
+printf "  [ ]  sudo exportfs -v  (verify NFS exports)\n"
+printf "  [ ]  systemctl --user status podman.socket\n"
 {{- end }}
 printf "\n"
 printf "  ${GREEN}${BOLD}Setup complete. Welcome back.${RESET}\n\n"
