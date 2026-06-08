@@ -1,0 +1,11 @@
+{{- $machineType := "workstation" -}}
+{{- if eq .chezmoi.hostname "sycamore" -}}
+{{-   $machineType = "server" -}}
+{{- end -}}
+
+{{- $sysVendor := output "sh" "-c" "cat /sys/class/dmi/id/sys_vendor 2>/dev/null || echo ''" | trim -}}
+{{- $isFramework := contains "Framework" $sysVendor -}}
+
+[data]
+    machineType = {{ $machineType | quote }}
+    isFramework = {{ $isFramework }}

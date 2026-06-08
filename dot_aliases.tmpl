@@ -58,5 +58,7 @@ alias reload='sudo systemctl reload'
 alias docker='podman'
 alias cz='chezmoi'
 alias http='xh'
+{{- if eq .machineType "workstation" }}
 alias fw='sudo framework_tool --driver portio'
 alias dconf-export='dconf dump / > {{ .chezmoi.sourceDir }}/dconf.ini && echo "dconf.ini updated - review: git -C {{ .chezmoi.sourceDir }} diff dconf.ini"'
+{{- end }}

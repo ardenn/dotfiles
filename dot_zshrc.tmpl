@@ -32,6 +32,7 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # zoxide - frecency-based smart cd; use z <partial> to jump
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 
+{{- if eq .machineType "workstation" }}
 # Export Java and Android environments
 export ANDROID_HOME=$HOME/android/sdk
 # export JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
@@ -46,25 +47,31 @@ export ANDROID_HOME=$HOME/android/sdk
 # Add Flutter to PATH
 export PATH="$PATH:$HOME/flutter/bin"
 export PATH="$PATH":"$HOME/flutter/.pub-cache/bin"
+{{- end }}
 
 # Add local bin to PATH
 export PATH="$PATH:$HOME/.local/bin"
 
+{{- if eq .machineType "workstation" }}
 # Add Go to path
 export GOPATH=$HOME/go
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$GOPATH/bin"
+{{- end }}
 
 # Set default editor
 export EDITOR=/bin/nano
 
+{{- if eq .machineType "workstation" }}
 # Add platform tools to path
 export PATH="$PATH:$HOME/android/sdk/platform-tools"
+{{- end }}
 
 # Shell completions
 if command -v kubectl &>/dev/null; then source <(kubectl completion zsh); fi
 if command -v chezmoi &>/dev/null; then source <(chezmoi completion zsh); fi
 
+{{- if eq .machineType "workstation" }}
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -86,11 +93,12 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-clou
 export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
-# Disable auto-correction
-unsetopt correct_all
-
 # esp-rs
 if [ -f "$HOME/export-esp.sh" ]; then . "$HOME/export-esp.sh"; fi
+{{- end }}
+
+# Disable auto-correction
+unsetopt correct_all
 
 # Starship
 eval "$(starship init zsh)"

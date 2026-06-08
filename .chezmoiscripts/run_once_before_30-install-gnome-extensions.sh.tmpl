@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "linux" -}}
+{{- if eq .machineType "workstation" -}}
 #!/bin/bash
 
 # ── colours & helpers ────────────────────────────────────────────────────────
@@ -59,3 +60,4 @@ install_extension "window-thumbnails@G-dH.github.com"
 printf "\n  ${GREEN}${BOLD}Extensions installed. They will activate on first GNOME login.${RESET}\n\n"
 
 {{ end }}
+{{- end }}

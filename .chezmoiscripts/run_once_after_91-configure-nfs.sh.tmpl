@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "linux" -}}
+{{- if eq .machineType "workstation" -}}
 #!/bin/bash
 
 # ── colours & helpers ────────────────────────────────────────────────────────
@@ -33,3 +34,4 @@ printf "\n  ${YELLOW}⚠${RESET}  Requires Tailscale to be connected before moun
 printf "  ${BLUE}→${RESET}  To mount: ${BOLD}mount ${MOUNT_POINT}${RESET}\n\n"
 
 {{ end }}
+{{- end }}

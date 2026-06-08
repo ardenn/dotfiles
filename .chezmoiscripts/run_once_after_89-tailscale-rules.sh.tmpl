@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "linux" -}}
+{{- if eq .machineType "workstation" -}}
 #!/bin/bash
 
 # ── colours & helpers ────────────────────────────────────────────────────────
@@ -43,3 +44,4 @@ ok "tailscale-nft.service enabled and started"
 printf "\n  ${YELLOW}→${RESET}  Run ${BOLD}sudo tailscale up${RESET} to connect to your tailnet.\n\n"
 
 {{ end }}
+{{- end }}

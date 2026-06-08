@@ -21,11 +21,13 @@ set -e
 
 # ── self-running steps ────────────────────────────────────────────────────────
 
+{{- if eq .machineType "workstation" }}
 step 1 "Configuring Bluetooth fast connect & auto-reconnect"
 sudo tee -a /etc/bluetooth/main.conf <<< "FastConnectable=true"
 sudo tee -a /etc/bluetooth/main.conf <<< "ReconnectAttempts=7"
 sudo tee -a /etc/bluetooth/main.conf <<< "ReconnectIntervals=1,2,4,8,16,32,64"
 ok "Bluetooth reconnect settings applied"
+{{- end }}
 
 step 2 "Enabling SSH service"
 sudo systemctl enable --now sshd
@@ -49,6 +51,7 @@ else
     info "Then:             gh ssh-key add ~/.ssh/id_ed25519.pub --title \"\$(hostname)\""
 fi
 
+{{- if eq .machineType "workstation" }}
 step 5 "Configuring power management"
 info "AC: no sleep on idle (screen lock only)"
 info "Battery: suspend on idle"
@@ -60,6 +63,7 @@ info "(These preferences are also captured in dconf.ini)"
 step 6 "SSH agent - register key (requires active session)"
 warn "Cannot run in this context - execute manually after login:"
 info "  eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519"
+{{- end }}
 
 # ── post-install checklist ────────────────────────────────────────────────────
 
@@ -72,12 +76,17 @@ printf "  [ ]  eval \"\$(ssh-agent -s)\" && ssh-add ~/.ssh/id_ed25519\n"
 printf "  [ ]  gh auth login\n"
 printf "  [ ]  gh ssh-key add ~/.ssh/id_ed25519.pub --title \"\$(hostname)\"\n"
 printf "  [ ]  sudo tailscale up\n"
+{{- if eq .machineType "workstation" }}
 printf "  [ ]  mount /media/rodgers/nfs/sycamore  (after Tailscale is up)\n"
 printf "  [ ]  Copy KeePassXC database from cloud storage\n"
 printf "  [ ]  Sign in to Mullvad VPN\n"
 printf "  [ ]  Sign in to Google Chrome\n"
 printf "  [ ]  Log out and back in  -  ZSH activates as default shell\n"
 printf "  [ ]  Log in to GNOME     -  extensions activate on first session\n"
+{{- else }}
+printf "  [ ]  Verify NFS exports:  sudo exportfs -v\n"
+printf "  [ ]  Verify fail2ban:     sudo systemctl status fail2ban\n"
+{{- end }}
 printf "\n"
 printf "  ${GREEN}${BOLD}Setup complete. Welcome back.${RESET}\n\n"
 

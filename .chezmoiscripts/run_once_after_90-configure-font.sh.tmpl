@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "linux" -}}
+{{- if eq .machineType "workstation" -}}
 #!/bin/bash
 
 # ── colours & helpers ────────────────────────────────────────────────────────
@@ -38,3 +39,4 @@ ok "Font cache updated"
 printf "\n  ${GREEN}${BOLD}Fonts ready.${RESET}\n\n"
 
 {{ end }}
+{{- end }}

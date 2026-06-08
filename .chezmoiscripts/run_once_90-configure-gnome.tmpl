@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "linux" -}}
+{{- if eq .machineType "workstation" -}}
 #!/bin/bash
 
 # ── colours & helpers ────────────────────────────────────────────────────────
@@ -26,3 +27,4 @@ ok "Fractional scaling enabled"
 printf "\n  ${BLUE}→${RESET}  Log in to GNOME to activate extensions and apply all settings.\n\n"
 
 {{ end }}
+{{- end }}
