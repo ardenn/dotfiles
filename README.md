@@ -6,8 +6,8 @@ Supports two machine roles, detected automatically from hostname:
 
 | Hostname | Role | Description |
 |----------|------|-------------|
-| anything else | `workstation` | Full desktop setup — GNOME, apps, fonts, Mullvad |
-| `sycamore` | `server` | Headless server — containers, NFS, Cockpit |
+| anything else | `workstation` | Full desktop setup - GNOME, apps, fonts, Mullvad |
+| `sycamore` | `server` | Headless server - containers, NFS, Cockpit |
 
 ## Install
 
@@ -18,7 +18,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --apply ardenn
 ```
 
 This installs chezmoi and applies the dotfiles in one step. The machine role and Framework laptop
-detection are resolved automatically at init time — no prompts required.
+detection are resolved automatically at init time - no prompts required.
 
 ## What gets set up
 
@@ -46,18 +46,18 @@ Scripts run in order. Steps marked **W** are workstation-only, **S** are server-
 ## What's managed
 
 ### Both machines
-- **Shell** — ZSH config, aliases, Starship prompt
-- **Git** — `~/.gitconfig`, global `.gitignore`
-- **Containers** — `DOCKER_HOST` for rootless Podman; Docker Compose as podman's external provider
+- **Shell** - ZSH config, aliases, Starship prompt
+- **Git** - `~/.gitconfig`, global `.gitignore`
+- **Containers** - `DOCKER_HOST` for rootless Podman; Docker Compose as podman's external provider
 
 ### Workstation only
-- **Editors** — Zed settings
-- **Terminals** — Kitty, Ghostty, Terminator
-- **GNOME** — dconf settings (extensions, fonts, input, power, night light, keybindings)
-- **GNOME extensions** — 12 extensions auto-installed and configured
-- **Network** — Tailscale + Mullvad VPN nftables rules
-- **Media** — mpv hardware decode config
-- **Audio** — WirePlumber UCM override
+- **Editors** - Zed settings
+- **Terminals** - Kitty, Ghostty, Terminator
+- **GNOME** - dconf settings (extensions, fonts, input, power, night light, keybindings)
+- **GNOME extensions** - 12 extensions auto-installed and configured
+- **Network** - Tailscale + Mullvad VPN nftables rules
+- **Media** - mpv hardware decode config
+- **Audio** - WirePlumber UCM override
 
 ## Post-install checklist
 
@@ -72,7 +72,7 @@ sudo tailscale up
 mount /media/rodgers/nfs/sycamore   # after Tailscale is connected
 ```
 
-Then log out and back in — ZSH activates as the default shell and GNOME extensions load on first session.
+Then log out and back in - ZSH activates as the default shell and GNOME extensions load on first session.
 
 ### Server (sycamore)
 ```sh
