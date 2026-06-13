@@ -36,6 +36,9 @@ install_extension() {
     if curl -fsL "$url" -o "$tmp"; then
         mkdir -p "$dest"
         unzip -q "$tmp" -d "$dest"
+        if [ -d "$dest/schemas" ]; then
+            glib-compile-schemas "$dest/schemas/"
+        fi
         ok "$uuid"
     else
         warn "Could not download $uuid"
