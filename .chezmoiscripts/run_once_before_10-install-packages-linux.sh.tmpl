@@ -160,6 +160,8 @@ step 4 "Installing server packages"
 sudo dnf install -y "${server_packages[@]}"
 ok "Server packages installed"
 
+{{- if eq .nasRole "host" }}
+
 step 5 "Installing mergerfs"
 # Not in Fedora's repos - upstream publishes prebuilt RPMs per Fedora release.
 MERGERFS_VERSION="2.42.0"
@@ -170,6 +172,7 @@ curl -fsSL "https://github.com/trapexit/mergerfs/releases/download/${MERGERFS_VE
 sudo dnf install -y "$tmp"
 rm -f "$tmp"
 ok "mergerfs ${MERGERFS_VERSION} installed"
+{{- end }}
 
 step 6 "Installing Docker Compose (podman-compatible)"
 COMPOSE_VERSION="v5.0.1"
