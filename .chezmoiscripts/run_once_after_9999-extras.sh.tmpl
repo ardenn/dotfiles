@@ -110,16 +110,24 @@ printf "  [ ]  gh auth login\n"
 printf "  [ ]  gh ssh-key add ~/.ssh/id_ed25519.pub --title \"\$(hostname)\"\n"
 printf "  [ ]  sudo tailscale up\n"
 {{- if eq .machineType "workstation" }}
-printf "  [ ]  mount /media/rodgers/nfs/sycamore  (after Tailscale is up)\n"
 printf "  [ ]  Copy KeePassXC database from cloud storage\n"
 printf "  [ ]  Sign in to Mullvad VPN\n"
 printf "  [ ]  Sign in to Google Chrome\n"
 printf "  [ ]  Log out and back in  -  ZSH activates as default shell\n"
 printf "  [ ]  Log in to GNOME     -  extensions activate on first session\n"
-{{- else }}
+{{- end }}
+{{- if eq .machineType "server" }}
+printf "  [ ]  systemctl --user status podman.socket\n"
+{{- end }}
+{{- if eq .nasRole "host" }}
 printf "  [ ]  sudo mount -a  (after storage script runs)\n"
 printf "  [ ]  sudo exportfs -v  (verify NFS exports)\n"
-printf "  [ ]  systemctl --user status podman.socket\n"
+{{- end }}
+{{- if eq .nasRole "client" }}
+printf "  [ ]  mount /media/rodgers/nfs/{{ .nasHostname }}  (after Tailscale is up)\n"
+{{- end }}
+{{- if eq .transcodeRole "quicksync" }}
+printf "  [ ]  vainfo  (verify QuickSync VAAPI device is detected)\n"
 {{- end }}
 printf "\n"
 printf "  ${GREEN}${BOLD}Setup complete. Welcome back.${RESET}\n\n"

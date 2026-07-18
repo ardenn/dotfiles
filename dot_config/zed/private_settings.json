@@ -7,44 +7,51 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "format_on_save": "on",
+  "formatter": "language_server",
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": false,
+    "anthropic_retention": false,
+  },
   "cli_default_open_behavior": "new_window",
   "terminal": {
-    "font_size": 14.0
+    "font_size": 14.0,
   },
   "colorize_brackets": true,
   "project_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "outline_panel": {
-    "dock": "right"
+    "dock": "right",
   },
   "agent": {
     "play_sound_when_agent_done": "when_hidden",
     "sidebar_side": "right",
     "dock": "right",
     "favorite_models": [],
-    "model_parameters": []
+    "model_parameters": [],
   },
   "git_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "agent_servers": {
     "claude-acp": {
       "default_config_options": {
-        "mode": "plan"
+        "mode": "plan",
       },
-      "type": "registry"
+      "type": "registry",
     },
     "github-copilot-cli": {
-      "type": "registry"
+      "type": "registry",
     },
     "gemini": {
-      "type": "registry"
-    }
+      "type": "registry",
+    },
   },
   "collaboration_panel": {
     "dock": "right",
-    "button": false
+    "button": false,
   },
   "restore_on_startup": "empty_tab",
   "edit_predictions": {
@@ -105,11 +112,11 @@
   "theme": {
     "mode": "system",
     "light": "Monokai-og",
-    "dark": "Monokai-og"
+    "dark": "Monokai-og",
   },
   "languages": {
     "GraphQL": {
-      "preferred_line_length": 120
+      "preferred_line_length": 120,
     },
     "Rust": {
       "inlay_hints": {

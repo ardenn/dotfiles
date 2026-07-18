@@ -9,14 +9,26 @@ on:
 jobs:
   # ── Template rendering + file deployment ─────────────────────────────────
   dry-run:
-    name: Dry-run apply (${{ matrix.machineType }}, Fedora 44)
+    name: Dry-run apply (${{ matrix.name }}, Fedora 44)
     runs-on: ubuntu-latest
     container:
       image: fedora:44
 
     strategy:
       matrix:
-        machineType: [workstation, server]
+        include:
+          - name: workstation
+            machineType: workstation
+            nasRole: client
+            transcodeRole: none
+          - name: server-nas-host
+            machineType: server
+            nasRole: host
+            transcodeRole: none
+          - name: server-nas-client
+            machineType: server
+            nasRole: client
+            transcodeRole: quicksync
 
     steps:
       - uses: actions/checkout@v4
@@ -30,8 +42,8 @@ jobs:
       - name: Write chezmoi config
         run: |
           mkdir -p ~/.config/chezmoi
-          printf '[data]\n    machineType = "%s"\n    isFramework = false\n' \
-            "${{ matrix.machineType }}" > ~/.config/chezmoi/chezmoi.toml
+          printf '[data]\n    machineType = "%s"\n    isFramework = false\n    nasRole = "%s"\n    nasHostname = "sycamore"\n    transcodeRole = "%s"\n' \
+            "${{ matrix.machineType }}" "${{ matrix.nasRole }}" "${{ matrix.transcodeRole }}" > ~/.config/chezmoi/chezmoi.toml
 
       - name: Dry-run apply
         # Renders all templates against a real Fedora environment and shows

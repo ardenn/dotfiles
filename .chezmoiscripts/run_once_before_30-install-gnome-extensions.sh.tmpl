@@ -46,11 +46,28 @@ install_extension() {
     rm -f "$tmp"
 }
 
+install_extension_git() {
+    local uuid="$1"
+    local repo="$2"
+    local dest="$EXT_DIR/$uuid"
+    if [ -d "$dest" ]; then
+        info "$uuid - already present"
+        return 0
+    fi
+    if git clone --depth=1 -q "$repo" "$dest"; then
+        if [ -d "$dest/schemas" ]; then
+            glib-compile-schemas "$dest/schemas/"
+        fi
+        ok "$uuid"
+    else
+        warn "Could not clone $uuid"
+    fi
+}
+
 step 2 "Installing extensions"
 install_extension "blur-my-shell@aunetx"
 install_extension "dash-to-dock@micxgx.gmail.com"
 install_extension "Vitals@CoreCoding.com"
-install_extension "just-perfection-desktop@just-perfection"
 install_extension "hidetopbar@mathieu.bidon.ca"
 install_extension "clipboard-history@alexsaveau.dev"
 install_extension "fullscreen-to-empty-workspace2@corgijan.dev"
@@ -59,6 +76,7 @@ install_extension "Bluetooth-Battery-Meter@maniacx.github.com"
 install_extension "caffeine@patapon.info"
 install_extension "tailscale-status@maxgallup.github.com"
 install_extension "window-thumbnails@G-dH.github.com"
+install_extension_git "maximise-to-workspace@ardenn.github.io" "https://github.com/ardenn/maximise-to-workspace.git"
 
 printf "\n  ${GREEN}${BOLD}Extensions installed. They will activate on first GNOME login.${RESET}\n\n"
 

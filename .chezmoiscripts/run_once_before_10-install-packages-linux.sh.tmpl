@@ -134,6 +134,7 @@ flatpaks=(
     io.github.kolunmi.Bazaar
     net.trowell.typesetter
     org.gnome.SoundRecorder
+    de.schmidhuberj.Flare
 )
 
 step 5 "Installing Flatpak apps"
@@ -168,6 +169,13 @@ curl -fsSL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSIO
     -o "$HOME/.local/bin/docker-compose"
 chmod +x "$HOME/.local/bin/docker-compose"
 ok "Docker Compose ${COMPOSE_VERSION} installed"
+
+{{- if eq .transcodeRole "quicksync" }}
+
+step 6 "Installing Intel QuickSync hardware-transcode packages"
+sudo dnf install -y intel-media-driver libva-utils
+ok "QuickSync packages installed"
+{{- end }}
 
 {{- end }}
 

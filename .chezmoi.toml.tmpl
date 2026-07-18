@@ -1,11 +1,27 @@
+{{- $serverHostnames := list "sycamore" "willow" -}}
 {{- $machineType := "workstation" -}}
-{{- if eq .chezmoi.hostname "sycamore" -}}
+{{- if has .chezmoi.hostname $serverHostnames -}}
 {{-   $machineType = "server" -}}
+{{- end -}}
+
+{{- $nasHostname := "sycamore" -}}
+{{- $nasRole := "client" -}}
+{{- if eq .chezmoi.hostname $nasHostname -}}
+{{-   $nasRole = "host" -}}
+{{- end -}}
+
+{{- $transcodeHostnames := list "willow" -}}
+{{- $transcodeRole := "none" -}}
+{{- if has .chezmoi.hostname $transcodeHostnames -}}
+{{-   $transcodeRole = "quicksync" -}}
 {{- end -}}
 
 {{- $sysVendor := output "sh" "-c" "cat /sys/class/dmi/id/sys_vendor 2>/dev/null || echo ''" | trim -}}
 {{- $isFramework := contains "Framework" $sysVendor -}}
 
 [data]
-    machineType = {{ $machineType | quote }}
-    isFramework = {{ $isFramework }}
+    machineType   = {{ $machineType | quote }}
+    isFramework   = {{ $isFramework }}
+    nasRole       = {{ $nasRole | quote }}
+    nasHostname   = {{ $nasHostname | quote }}
+    transcodeRole = {{ $transcodeRole | quote }}
