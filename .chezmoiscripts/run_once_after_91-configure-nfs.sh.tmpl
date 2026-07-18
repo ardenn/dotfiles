@@ -15,15 +15,16 @@ printf "  ${CYAN}┌────────────────────
 printf "  ${CYAN}│${RESET}  📂  NFS Mount Configuration                      ${CYAN}│${RESET}\n"
 printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
 
+NAS_EXPORT="{{ .nasHostname }}:/mnt/storage"
 MOUNT_POINT="/media/rodgers/nfs/{{ .nasHostname }}"
-FSTAB_ENTRY="{{ .nasHostname }}:/mnt/storage ${MOUNT_POINT} nfs defaults,_netdev,noauto,user,rw 0 0"
+FSTAB_ENTRY="${NAS_EXPORT} ${MOUNT_POINT} nfs defaults,_netdev,noauto,user,rw 0 0"
 
 step 1 "Creating mount point"
 sudo mkdir -p "$MOUNT_POINT"
 ok "Mount point ready: ${MOUNT_POINT}"
 
 step 2 "Registering fstab entry"
-if grep -qF "{{ .nasHostname }}:/mnt/storage" /etc/fstab; then
+if grep -qF "$NAS_EXPORT" /etc/fstab; then
     info "Entry already present in /etc/fstab - skipping"
 else
     echo "$FSTAB_ENTRY" | sudo tee -a /etc/fstab > /dev/null

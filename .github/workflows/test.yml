@@ -62,14 +62,16 @@ jobs:
         run: sudo apt-get install -y shellcheck
 
       - name: Lint scripts
-        # Strip chezmoi template directives before linting so shellcheck
-        # sees plain bash. Lines containing {{ }} are removed; the remaining
-        # shell code is checked for common errors.
+        # Strip chezmoi template actions before linting so shellcheck sees
+        # plain bash. Each {{ ... }} token is replaced with a placeholder
+        # in place (not the whole line removed), so template actions that
+        # share a line with real bash (assignments, if/then) don't get
+        # mangled into unbalanced syntax.
         run: |
           failed=0
           for f in .chezmoiscripts/*.sh.tmpl; do
             echo "── $f"
-            if ! sed '/{{/d' "$f" | shellcheck --shell=bash --severity=warning --exclude=SC2034 -; then
+            if ! sed -E 's/\{\{-?[^}]*-?\}\}/x/g' "$f" | shellcheck --shell=bash --severity=warning --exclude=SC2034 -; then
               failed=1
             fi
           done
