@@ -71,8 +71,9 @@ sudo dnf update -y
 ok "System up to date"
 
 step 2 "Enabling third-party repositories"
-sudo dnf install -y fedora-workstation-repositories dnf-plugins-core
+sudo dnf install -y dnf-plugins-core
 {{- if eq .machineType "workstation" }}
+sudo dnf install -y fedora-workstation-repositories
 sudo dnf config-manager setopt google-chrome.enabled=1
 sudo dnf install -y --nogpgcheck \
     --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' \
@@ -91,8 +92,8 @@ base_packages=(
     zoxide
     gh
     htop
-    gnupg
-    util-linux-user
+    gnupg2
+    util-linux
     openssh-server
     bat
 )
@@ -147,10 +148,10 @@ ok "Flatpaks installed"
 server_packages=(
     nfs-utils
     fail2ban
-    delta
+    git-delta
     cockpit
     cockpit-networkmanager
-    cockpit-storage
+    cockpit-storaged
     cockpit-selinux
     smartmontools
     rsync
@@ -186,7 +187,7 @@ ok "Docker Compose ${COMPOSE_VERSION} installed"
 {{- if eq .transcodeRole "quicksync" }}
 
 step 7 "Installing Intel QuickSync hardware-transcode packages"
-sudo dnf install -y intel-media-driver libva-utils
+sudo dnf install -y libva-intel-media-driver libva-utils
 ok "QuickSync packages installed"
 {{- end }}
 
