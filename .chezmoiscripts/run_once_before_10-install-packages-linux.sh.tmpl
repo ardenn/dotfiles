@@ -154,14 +154,24 @@ server_packages=(
     cockpit-selinux
     smartmontools
     rsync
-    mergerfs
 )
 
 step 4 "Installing server packages"
 sudo dnf install -y "${server_packages[@]}"
 ok "Server packages installed"
 
-step 5 "Installing Docker Compose (podman-compatible)"
+step 5 "Installing mergerfs"
+# Not in Fedora's repos - upstream publishes prebuilt RPMs per Fedora release.
+MERGERFS_VERSION="2.42.0"
+FEDORA_VERSION="$(rpm -E %fedora)"
+tmp=$(mktemp /tmp/mergerfs-XXXXXX.rpm)
+curl -fsSL "https://github.com/trapexit/mergerfs/releases/download/${MERGERFS_VERSION}/mergerfs-${MERGERFS_VERSION}-1.fc${FEDORA_VERSION}.x86_64.rpm" \
+    -o "$tmp"
+sudo dnf install -y "$tmp"
+rm -f "$tmp"
+ok "mergerfs ${MERGERFS_VERSION} installed"
+
+step 6 "Installing Docker Compose (podman-compatible)"
 COMPOSE_VERSION="v5.0.1"
 ARCH="$(uname -m)"
 mkdir -p "$HOME/.local/bin"
@@ -172,7 +182,7 @@ ok "Docker Compose ${COMPOSE_VERSION} installed"
 
 {{- if eq .transcodeRole "quicksync" }}
 
-step 6 "Installing Intel QuickSync hardware-transcode packages"
+step 7 "Installing Intel QuickSync hardware-transcode packages"
 sudo dnf install -y intel-media-driver libva-utils
 ok "QuickSync packages installed"
 {{- end }}
