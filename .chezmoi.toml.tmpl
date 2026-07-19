@@ -5,6 +5,7 @@
 {{- end -}}
 
 {{- $nasHostname := "sycamore" -}}
+{{- $nasLanIP := "192.168.1.180" -}}
 {{- $nasRole := "client" -}}
 {{- if eq .chezmoi.hostname $nasHostname -}}
 {{-   $nasRole = "host" -}}
@@ -24,4 +25,5 @@
     isFramework   = {{ $isFramework }}
     nasRole       = {{ $nasRole | quote }}
     nasHostname   = {{ $nasHostname | quote }}
+    nasLanIP      = {{ $nasLanIP | quote }}
     transcodeRole = {{ $transcodeRole | quote }}

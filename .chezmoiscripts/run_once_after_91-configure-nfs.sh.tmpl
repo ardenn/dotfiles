@@ -15,7 +15,7 @@ printf "  ${CYAN}┌────────────────────
 printf "  ${CYAN}│${RESET}  📂  NFS Mount Configuration                      ${CYAN}│${RESET}\n"
 printf "  ${CYAN}└───────────────────────────────────────────────────┘${RESET}\n\n"
 
-NAS_EXPORT="{{ .nasHostname }}:/mnt/storage"
+NAS_EXPORT="{{ .nasLanIP }}:/mnt/storage"
 MOUNT_POINT="/media/rodgers/nfs/{{ .nasHostname }}"
 FSTAB_ENTRY="${NAS_EXPORT} ${MOUNT_POINT} nfs defaults,_netdev,noauto,user,rw 0 0"
 
@@ -31,8 +31,7 @@ else
     ok "Entry added to /etc/fstab"
 fi
 
-printf "\n  ${YELLOW}⚠${RESET}  Requires Tailscale to be connected before mounting.\n"
-printf "  ${BLUE}→${RESET}  To mount: ${BOLD}mount ${MOUNT_POINT}${RESET}\n\n"
+printf "\n  ${BLUE}→${RESET}  To mount: ${BOLD}mount ${MOUNT_POINT}${RESET}\n\n"
 
 {{ end }}
 {{- end }}
