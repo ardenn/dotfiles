@@ -42,7 +42,7 @@ jobs:
       - name: Write chezmoi config
         run: |
           mkdir -p ~/.config/chezmoi
-          printf '[data]\n    machineType = "%s"\n    isFramework = false\n    nasRole = "%s"\n    nasHostname = "sycamore"\n    transcodeRole = "%s"\n' \
+          printf '[data]\n    machineType = "%s"\n    isFramework = false\n    nasRole = "%s"\n    nasHostname = "sycamore"\n    nasLanIP = "192.168.1.180"\n    transcodeRole = "%s"\n' \
             "${{ matrix.machineType }}" "${{ matrix.nasRole }}" "${{ matrix.transcodeRole }}" > ~/.config/chezmoi/chezmoi.toml
 
       - name: Dry-run apply
