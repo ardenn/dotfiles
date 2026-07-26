@@ -13,3 +13,4 @@
   - Use the imperative mood in the subject line (e.g., "Add feature", not "Added feature").
   - Do not use Conventional Commit specifications (e.g., no `feat:`, `fix:` prefixes).
   - Do not add Claude or any AI agent as a co-author unless explicitly requested.
+  - Do not automatically commit or push changes unless explicitly asked to.
