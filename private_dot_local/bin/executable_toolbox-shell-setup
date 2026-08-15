@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Installs zsh + starship + zsh plugins inside a Fedora toolbox.
+#
+# ~/.zshrc, ~/.config/starship.toml and ~/.terminfo are already visible in
+# every toolbox because $HOME is bind-mounted in -- only the binaries below
+# live in the container's own (non-shared) root filesystem, so each new
+# toolbox needs this run once.
+set -euo pipefail
+
+if [ ! -e /run/.containerenv ]; then
+  echo "Refusing to run outside a toolbox/container." >&2
+  exit 1
+fi
+
+sudo dnf install -y zsh zsh-syntax-highlighting zsh-autosuggestions
+
+if ! command -v starship >/dev/null 2>&1; then
+  curl -sS https://starship.rs/install.sh | sh -s -- -y -b /usr/local/bin
+fi
+
+echo "Done -- re-enter the toolbox (or run 'exec zsh') to pick up the new shell."
