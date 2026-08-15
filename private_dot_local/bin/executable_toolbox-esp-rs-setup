@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Installs the system packages needed to `cargo install espup` inside a
+# Fedora toolbox: espup pulls in openssl-sys with the `vendored` feature
+# (so it always compiles its own OpenSSL, ignoring system openssl-devel),
+# and that vendored build's Configure/Makefile.in scripts need several
+# Perl modules Fedora ships as separate subpackages rather than bundling
+# with the base perl-interpreter.
+set -euo pipefail
+
+if [ ! -e /run/.containerenv ]; then
+  echo "Refusing to run outside a toolbox/container." >&2
+  exit 1
+fi
+
+sudo dnf install -y \
+  openssl-devel \
+  perl-FindBin \
+  perl-IPC-Cmd \
+  perl-Test-Simple \
+  perl-File-Copy \
+  perl-File-Compare \
+  perl-Time-Piece
+
+echo "Done -- 'cargo install espup' should now build cleanly."
