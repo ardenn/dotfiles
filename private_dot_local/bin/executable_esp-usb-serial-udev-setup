@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Installs a udev rule on the HOST granting access to common USB-to-UART
+# bridge chips found on ESP32/ESP8266 dev boards (CH340, CH9102, CP210x,
+# FTDI FT232R). These are plain serial adapters, not JTAG debug probes, so
+# they aren't covered by probe-rs-udev-setup's 69-probe-rs.rules.
+#
+# Uses the "uaccess" tag so systemd-logind grants the active console user
+# access immediately (no dialout group membership or re-login needed).
+set -euo pipefail
+
+if [ -e /run/.containerenv ]; then
+  echo "Run this on the host, not inside a toolbox/container." >&2
+  exit 1
+fi
+
+sudo tee /etc/udev/rules.d/70-esp-usb-serial.rules > /dev/null <<'EOF'
+# USB-to-UART bridge chips commonly found on ESP32/ESP8266 dev boards.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE="0660", GROUP="dialout", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", MODE="0660", GROUP="dialout", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE="0660", GROUP="dialout", TAG+="uaccess"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", MODE="0660", GROUP="dialout", TAG+="uaccess"
+EOF
+
+sudo udevadm control --reload
+sudo udevadm trigger
+
+echo "Done -- unplug and replug your board for the new rule to take effect."
