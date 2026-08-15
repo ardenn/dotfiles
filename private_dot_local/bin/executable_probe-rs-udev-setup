@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Installs the official probe-rs udev rules on the HOST (not a toolbox --
+# udev rules only take effect where udevd actually runs; a toolbox's /dev
+# is just bind-mounted through from the host, so rules belong here).
+# Grants non-root access to debug probes (ST-Link, J-Link, CMSIS-DAP,
+# WCH-Link, Espressif's built-in USB-JTAG, ...) via the "uaccess" tag,
+# which systemd-logind applies to the active console user automatically.
+set -euo pipefail
+
+if [ -e /run/.containerenv ]; then
+  echo "Run this on the host, not inside a toolbox/container." >&2
+  exit 1
+fi
+
+sudo curl -fsSL https://probe.rs/files/69-probe-rs.rules -o /etc/udev/rules.d/69-probe-rs.rules
+sudo udevadm control --reload
+sudo udevadm trigger
+
+echo "Done -- probe-rs udev rules installed. Reconnect your probe/board if it was already plugged in."

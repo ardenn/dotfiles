@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
-# Installs the system packages needed to `cargo install espup` inside a
-# Fedora toolbox: espup pulls in openssl-sys with the `vendored` feature
-# (so it always compiles its own OpenSSL, ignoring system openssl-devel),
-# and that vendored build's Configure/Makefile.in scripts need several
-# Perl modules Fedora ships as separate subpackages rather than bundling
-# with the base perl-interpreter.
+# Sets up the esp-rs tooling from
+# https://docs.espressif.com/projects/rust/book/getting-started/tooling/
+# inside a Fedora toolbox: espup, espflash and probe-rs-tools all pull in
+# openssl-sys with the `vendored` feature (so they always compile their own
+# OpenSSL, ignoring system openssl-devel), and that vendored build's
+# Configure/Makefile.in scripts need several Perl modules Fedora ships as
+# separate subpackages rather than bundling with the base perl-interpreter.
+#
+# espflash and probe-rs-tools are installed via cargo-binstall (prebuilt
+# release binaries) instead, sidestepping that build entirely -- espup has
+# no prebuilt release, so it still needs the Perl/OpenSSL packages below.
+#
+# Run probe-rs-udev-setup separately, on the HOST, for probe/board access.
 set -euo pipefail
 
 if [ ! -e /run/.containerenv ]; then
@@ -21,4 +28,12 @@ sudo dnf install -y \
   perl-File-Compare \
   perl-Time-Piece
 
-echo "Done -- 'cargo install espup' should now build cleanly."
+if ! command -v cargo-binstall >/dev/null 2>&1; then
+  curl -L --proto '=https' --tlsv1.2 -sSf \
+    https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh \
+    | bash
+fi
+
+cargo binstall -y espflash probe-rs-tools
+
+echo "Done -- 'cargo install espup' should now build cleanly, and espflash/probe-rs are ready."
