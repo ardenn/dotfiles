@@ -42,6 +42,13 @@ if [ -z "$(ls -A "$GHOSTTY_THEMES_DIR" 2>/dev/null)" ]; then
 else
     info "Ghostty themes already present — skipping"
 fi
+
+step 3 "Configuring Celluloid hardware video decode"
+# Celluloid's Flatpak sandbox persists settings to a private keyfile-backed
+# GSettings store, not the shared dconf database - dconf.ini can't reach it.
+flatpak run --command=gsettings io.github.celluloid_player.Celluloid \
+    set io.github.celluloid-player.Celluloid mpv-options 'hwdec=auto-safe'
+ok "Celluloid hwdec configured"
 {{- end }}
 
 step 3 "Enabling SSH service"

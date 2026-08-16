@@ -79,6 +79,9 @@ sudo dnf install -y --nogpgcheck \
     --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' \
     terra-release
 sudo dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
+sudo dnf install -y \
+    "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
+    "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 {{- end }}
 ok "Repositories enabled"
 
@@ -116,6 +119,10 @@ workstation_packages=(
 step 4 "Installing workstation packages"
 sudo dnf install -y "${workstation_packages[@]}"
 ok "Workstation packages installed"
+
+step 4b "Enabling AMD hardware video decode (VA-API)"
+sudo dnf install -y --allowerasing mesa-va-drivers-freeworld libva-utils
+ok "AMD VA-API driver installed"
 
 flatpaks=(
     com.mattjakeman.ExtensionManager
