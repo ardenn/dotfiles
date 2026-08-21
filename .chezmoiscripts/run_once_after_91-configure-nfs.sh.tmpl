@@ -17,7 +17,7 @@ printf "  ${CYAN}└────────────────────
 
 NAS_EXPORT="{{ .nasLanIP }}:/mnt/storage"
 MOUNT_POINT="/media/rodgers/nfs/{{ .nasHostname }}"
-FSTAB_ENTRY="${NAS_EXPORT} ${MOUNT_POINT} nfs defaults,_netdev,noauto,user,rw 0 0"
+FSTAB_ENTRY="${NAS_EXPORT} ${MOUNT_POINT} nfs defaults,_netdev,noauto,x-systemd.automount,x-systemd.mount-timeout=10s,user,rw 0 0"
 
 step 1 "Creating mount point"
 sudo mkdir -p "$MOUNT_POINT"
@@ -31,7 +31,7 @@ else
     ok "Entry added to /etc/fstab"
 fi
 
-printf "\n  ${BLUE}→${RESET}  To mount: ${BOLD}mount ${MOUNT_POINT}${RESET}\n\n"
+printf "\n  ${BLUE}→${RESET}  Mounts automatically on first access to ${BOLD}${MOUNT_POINT}${RESET} (systemd automount).\n\n"
 
 {{ end }}
 {{- end }}
