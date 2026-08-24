@@ -30,12 +30,17 @@ Also exposes `nasHostname`, `nasLanIP` (sycamore's identity/IP), `isFramework`.
 - Flatpak apps can persist GSettings to a private sandboxed keyfile store instead of the shared dconf database, invisible to `dconf dump /` and unreachable by `dconf load /`. Before adding any Flatpak app's setting to `dconf.ini`, verify with `dconf dump /` that the key actually lands there. If it doesn't, configure it instead via `flatpak run --command=gsettings <app-id> set <schema> <key> <value>` in a script that runs after the app installs.
 - Verify a live config change actually round-trips through the real mechanism before persisting it to the dotfiles — don't just trust that the mechanism looks structurally correct. This is what caught the Flatpak/dconf gotcha above.
 - Fedora package name gotchas hit so far: `gnupg` → `gnupg2`, `util-linux-user` → `util-linux` (merged upstream), `delta` → `git-delta`, `cockpit-storage` → `cockpit-storaged`, `intel-media-driver` → `libva-intel-media-driver`. `mergerfs` isn't in any Fedora repo at all — install from the upstream GitHub release RPM matching the running Fedora version.
+- Don't write files directly into the chezmoi source tree — edit the real target path (e.g. `~/.zshrc`), then run `chezmoi add <target-path>` so chezmoi infers the right source naming/attributes (`executable_`, `private_`, etc.) itself.
+- This repo has pre-existing, unrelated pending `run_once` scripts (GNOME config, NFS, tailscale, package installs) that have never been applied on this machine — a bare `chezmoi apply`/`chezmoi diff` with no target shows/runs all of them. Always scope to the specific file being changed (e.g. `chezmoi diff <target-path>`) to avoid triggering them accidentally.
 
 ## Infrastructure reference
 
 SSH aliases configured: `ssh willow`, `ssh sycamore` (both as user `rodgers`).
 
-Sycamore runs its stack as rootless podman containers — check with `podman ps -a`, not `systemctl`. As of 2026-07 it includes: arcane (container manager UI), traefik, homer, pocketid, readeck, netbird, beszel + beszel-agent (monitoring, PocketBase API on internal network `10.89.1.2:8090`, needs auth), gluetun, jellyfin (no hardware transcode on sycamore itself), backrest (restic backups to Backblaze B2, repo `sycamore-cinemax-backblaze`, runs ~3am), seerr, the immich stack (server/machine-learning/redis/postgres/public-proxy), databasus, the *arr suite (bazarr/radarr/sonarr/prowlarr/profilarr/flaresolverr), qbittorrent/sabnzbd, cleanuparr, portcheck, miniflux (+ its own postgres), geopulse stack (postgres/backend/ui), home-assistant.
+Sycamore runs its stack as rootless podman containers — check `podman ps -a` for what's actually running, not `systemctl` and not a hardcoded list here (the stack changes often enough that an inventory would just go stale). A few facts worth keeping since they aren't visible from `podman ps -a` alone:
+- `backrest` backs up to Backblaze B2 (repo `sycamore-cinemax-backblaze`), runs nightly ~3am.
+- `beszel`/`beszel-agent` monitoring exposes a PocketBase API on the internal network at `10.89.1.2:8090` (needs auth).
+- `jellyfin` on sycamore does not do hardware transcode itself — that's willow's job (see `transcodeRole` in the data model above).
 
 Storage: sycamore pools disks via mergerfs at `/mnt/storage` (not RAID — `/proc/mdstat` is empty despite an `mdadm` raid-check timer existing harmlessly), exported over NFS, mounted by clients at `/media/rodgers/nfs/sycamore`. ~13TB total.
 
