@@ -28,7 +28,7 @@ Scripts run in order. Steps marked **W** are workstation-only, **S** are server-
 |------|--------|--------------|
 | 1 | `before_10` | Installs base packages (zsh, fzf, zoxide, gh, bat, …) |
 | 1W | `before_10` | Installs Chrome, Mullvad, Ghostty, Flatpaks, Brave, Zed, Fly.io |
-| 1S | `before_10` | Installs cockpit, fail2ban, mergerfs, delta, rsync, smartmontools |
+| 1S | `before_10` | Installs cockpit, mergerfs, delta, rsync, smartmontools |
 | 1S | `before_10` | Installs Docker Compose binary to `~/.local/bin` |
 | 2W | `before_11` | Removes unwanted Fedora defaults (Rhythmbox, LibreOffice, etc.) |
 | 3 | `before_20` | Sets ZSH as the default shell |
@@ -40,7 +40,7 @@ Scripts run in order. Steps marked **W** are workstation-only, **S** are server-
 | 9S | `after_92` | Prints storage reference (fstab, mergerfs, NFS exports) |
 | 10 | `after_9999` | Enables SSH service, generates ed25519 keypair |
 | 10W | `after_9999` | Configures Bluetooth, prints workstation checklist |
-| 10S | `after_9999` | Enables linger, podman socket, Cockpit, fail2ban |
+| 10S | `after_9999` | Enables linger, podman socket, Cockpit |
 | - W | `run_once_90` | Loads dconf settings and enables fractional scaling |
 
 ## What's managed

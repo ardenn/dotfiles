@@ -99,10 +99,6 @@ ok "podman.socket enabled"
 step 7 "Enabling Cockpit"
 sudo systemctl enable --now cockpit.socket
 ok "Cockpit enabled"
-
-step 8 "Enabling fail2ban"
-sudo systemctl enable --now fail2ban
-ok "fail2ban enabled"
 {{- end }}
 
 # ── post-install checklist ────────────────────────────────────────────────────
