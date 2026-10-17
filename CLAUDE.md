@@ -44,6 +44,15 @@ Sycamore runs its stack as rootless podman containers — check `podman ps -a` f
 
 Storage: sycamore pools disks via mergerfs at `/mnt/storage` (not RAID — `/proc/mdstat` is empty despite an `mdadm` raid-check timer existing harmlessly), exported over NFS, mounted by clients at `/media/rodgers/nfs/sycamore`. ~13TB total.
 
+After every sycamore reboot, willow's NFS mount goes stale (`Stale file handle`, despite `fsid=1` on the export) and the
+systemd automount won't remount by itself (`Mount process finished, but there is no mount`). Recovery: stop the
+containers holding the mount (`podman stop jellyfin immich-server`), then on willow `sudo umount -f
+/media/rodgers/nfs/sycamore; sudo systemctl reset-failed media-rodgers-nfs-sycamore.mount; sudo systemctl restart
+media-rodgers-nfs-sycamore.automount`, check `ls` works, and start the containers again. This is inherent to NFS over
+FUSE: handles are tied to node IDs mergerfs assigns at runtime, which reset whenever it restarts. Boot order isn't the
+cause (`nfs-server` already waits on `/mnt/storage`). The mergerfs options the docs require for NFS exports
+(`inodecalc=path-hash`, `never-forget-nodes=true`) prevent stale handles during uptime, not across reboots.
+
 ## Known deliberate gaps
 
 - Secure Boot KEK/db/dbx firmware updates on willow are left unapplied — firmware-level `EFI_SECURITY_VIOLATION` rejection, low priority given willow isn't exposed to the physical/local-access threat model those protect against.

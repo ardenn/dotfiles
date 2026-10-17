@@ -26,7 +26,7 @@ printf "           /mnt/disk1 ext4 defaults 0 0\n\n"
 printf "       /dev/disk/by-id/ata-WDC_WD121KRYZ-01W0RB0_5PJRPUZE-part1\n"
 printf "           /mnt/disk2 btrfs defaults 0 0\n\n"
 printf "       /mnt/disk1:/mnt/disk2 /mnt/storage\n"
-printf "           mergerfs cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false 0 0\n\n"
+printf "           mergerfs cache.files=off,category.create=pfrd,func.getattr=newest,dropcacheonclose=false,inodecalc=path-hash,never-forget-nodes=true 0 0\n\n"
 
 info "3. Add to /etc/exports (adjust subnets for your network):"
 printf "\n"
