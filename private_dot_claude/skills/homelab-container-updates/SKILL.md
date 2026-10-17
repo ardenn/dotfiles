@@ -27,6 +27,10 @@ images:list/read).
   services or images.
 - **Arcane cannot update itself, its agent, or traefik** under podman. Do those over SSH.
 - Sequence netbird so the management server (racknerd) is upgraded before the peers on sycamore and willow.
+- **If `gluetun` needs recreating** (image update or config change), don't use Arcane for the `arr` stack: several
+  services share gluetun's network namespace, so podman refuses to remove it and compose leaves it half-renamed
+  (`<id>_gluetun`) with the VPN-routed services down. Use SSH `docker-compose down && docker-compose up -d` in
+  `~/sycamore/arr` instead, then confirm gluetun logs a public IP.
 
 ## Procedure
 
