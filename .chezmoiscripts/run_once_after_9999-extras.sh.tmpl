@@ -65,8 +65,12 @@ fi
 
 step 5 "Adding SSH public key to GitHub"
 if gh auth status &>/dev/null 2>&1; then
-    gh ssh-key add "$HOME/.ssh/id_ed25519.pub" --title "$(hostname)"
-    ok "SSH key added to GitHub as '$(hostname)'"
+    if gh ssh-key list 2>/dev/null | grep -qF "$(cut -d' ' -f2 "$HOME/.ssh/id_ed25519.pub")"; then
+        info "SSH key already on GitHub - skipping"
+    else
+        gh ssh-key add "$HOME/.ssh/id_ed25519.pub" --title "$(hostname)"
+        ok "SSH key added to GitHub as '$(hostname)'"
+    fi
 else
     warn "gh is not authenticated - key not added yet"
     info "Run after setup:  gh auth login"
@@ -96,7 +100,11 @@ step 6 "Enabling podman socket (rootless container API)"
 systemctl --user enable --now podman.socket
 ok "podman.socket enabled"
 
-step 7 "Enabling Cockpit"
+step 7 "Enabling podman-restart (start restart-policy containers at boot)"
+systemctl --user enable podman-restart.service
+ok "podman-restart.service enabled"
+
+step 8 "Enabling Cockpit"
 sudo systemctl enable --now cockpit.socket
 ok "Cockpit enabled"
 {{- end }}
