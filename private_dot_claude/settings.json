@@ -1,0 +1,15 @@
+{
+  "extraKnownMarketplaces": {
+    "go-skills": {
+      "source": {
+        "source": "github",
+        "repo": "spf13/go-skills"
+      }
+    }
+  },
+  "theme": "dark",
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  }
+}

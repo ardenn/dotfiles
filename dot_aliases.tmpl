@@ -23,30 +23,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
-{{- if eq .chezmoi.osRelease.id "debian" }}
-# apt
-alias install='sudo apt install -y'
-alias search='apt search'
-alias update='sudo apt update'
-alias remove='sudo apt remove'
-alias purge='sudo apt purge'
-alias autoremove='sudo apt autoremove'
-alias upgrade='sudo apt full-upgrade -y'
-alias show='apt show'
-alias list='apt list'
-{{- end }}
-
-{{- if eq .chezmoi.osRelease.id "fedora" }}
-# dnf
-alias install='sudo dnf install -y'
-alias search='dnf search'
-alias update='sudo dnf update -y'
-alias remove='sudo dnf remove'
-alias autoremove='sudo dnf autoremove'
-alias upgrade='sudo dnf upgrade -y'
-alias show='dnf info'
-{{- end }}
-
 # systemctl
 alias start='sudo systemctl start'
 alias restart='sudo systemctl restart'

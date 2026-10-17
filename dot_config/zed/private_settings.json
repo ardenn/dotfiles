@@ -26,8 +26,10 @@
     "dock": "right",
   },
   "agent": {
+    "threads_sidebar": {
+      "position": "right"
+    },
     "play_sound_when_agent_done": "when_hidden",
-    "sidebar_side": "right",
     "dock": "right",
     "favorite_models": [],
     "model_parameters": [],
@@ -73,7 +75,9 @@
       "args": [],
       "projects": [
         {
-          "paths": ["/home/rodgers/sycamore"],
+          "paths": [
+            "/home/rodgers/sycamore"
+          ],
         },
       ],
     },
@@ -83,7 +87,9 @@
       "args": [],
       "projects": [
         {
-          "paths": ["/home/ubuntu/config"],
+          "paths": [
+            "/home/ubuntu/config"
+          ],
         },
       ],
       "nickname": "racknerd",
@@ -100,7 +106,9 @@
       "show_commit_summary": false,
     },
   },
-  "wrap_guides": [120],
+  "wrap_guides": [
+    120
+  ],
   "soft_wrap": "editor_width",
   "base_keymap": "SublimeText",
   "ui_font_size": 16.0,
@@ -117,6 +125,11 @@
   "languages": {
     "GraphQL": {
       "preferred_line_length": 120,
+    },
+    "Kotlin": {
+      "language_servers": [
+        "kotlin-language-server"
+      ]
     },
     "Rust": {
       "inlay_hints": {
@@ -137,7 +150,10 @@
     "protobuf-language-server": {
       "binary": {
         "path": "buf",
-        "arguments": ["lsp", "serve"],
+        "arguments": [
+          "lsp",
+          "serve"
+        ],
       },
     },
   },

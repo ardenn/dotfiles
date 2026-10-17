@@ -1,3 +1,8 @@
 dconf.ini
 README.md
-CLAUDE.md
+CLAUDE.md{{ if ne .machineType "workstation" }}
+.local/bin/toolbox-shell-setup
+.local/bin/toolbox-esp-rs-setup
+.local/bin/esp-usb-serial-udev-setup
+.local/bin/probe-rs-udev-setup
+{{ end }}
