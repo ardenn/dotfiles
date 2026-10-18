@@ -31,6 +31,11 @@ images:list/read).
   services share gluetun's network namespace, so podman refuses to remove it and compose leaves it half-renamed
   (`<id>_gluetun`) with the VPN-routed services down. Use SSH `docker-compose down && docker-compose up -d` in
   `~/sycamore/arr` instead, then confirm gluetun logs a public IP.
+- **At most one `userns_mode: keep-id` service per stack.** Podman's Docker API gives all but one of several
+  `keep-id` containers created in one deployment a one-entry ID map, and they sit in `Created` with `crun: mount
+  devpts to dev/pts: Invalid argument`. Restarting reuses the bad map. If a compose change adds a second one, flag it;
+  apps that can run as root inside (`PUID=0` or `user: "0:0"`) should do that instead, since rootless podman maps
+  container root to `rodgers`.
 
 ## Procedure
 
@@ -80,6 +85,14 @@ images:list/read).
    - netbird-server runs DB migrations for ~30s after an upgrade; the proxy logs `connection refused` until then.
      Wait and recheck before treating it as a failure.
    - Arcane: `/api/version` shows the new version; after an agent upgrade both environments are `online`.
+   - On sycamore and willow, no container is stuck in `Created`: `ssh <host> 'podman ps -a --filter status=created
+     --format "{{.Names}}"'`. For each one, check its map with `podman inspect <c> --format
+     '{{json .HostConfig.IDMappings}}'`: a lone `1000:0:1` entry is the `keep-id` bug above. Recreate the affected
+     services one at a time over SSH (`docker-compose up -d --force-recreate --no-deps <service>`), which gives them a
+     full map.
+   - Nothing new under `~/containers`, `~/sycamore` or `/mnt/storage` (sycamore) is owned by anyone but `rodgers`,
+     apart from `~/containers/databasus`: `find <path> -path ~/containers/databasus -prune -o ! -user rodgers -print`.
+     A hit usually means an image now runs as a non-root user; switch it to root inside or `keep-id`.
 
 7. **Re-run step 1** to confirm nothing is left pending.
 
