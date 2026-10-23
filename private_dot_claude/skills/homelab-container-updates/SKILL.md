@@ -9,8 +9,8 @@ Hosts and how each is managed:
 
 | Host | Runtime | Stacks | Check | Upgrade |
 |---|---|---|---|---|
-| sycamore | rootless podman + compose CLI | `~/sycamore/<stack>` | Arcane API (env `Sycamore`) | Arcane API, except `arcane` and `traefik` (SSH) |
-| willow | rootless podman + compose CLI | `~/sycamore/willow/<stack>` | Arcane API (env `Willow`) | Arcane API, except `arcaneagent` (SSH) |
+| sycamore | rootless podman + compose CLI | `~/sycamore/<stack>` | Arcane API (env `Sycamore`) | Arcane API, except Quadlet stacks (`traefik`, `arcane`) and Quadlet jobs |
+| willow | rootless podman + compose CLI | `~/sycamore/willow/<stack>` | Arcane API (env `Willow`) | Arcane API, except Quadlet stacks (`arcaneagent`) |
 | racknerd | rootless Docker (`ssh ubuntu@racknerd`) | `~/netbird`, `~/beszel` | `scripts/docker-updates.sh` | SSH |
 
 Arcane lists a `Racknerd` environment; it is stale and not used. Never manage racknerd through Arcane.
@@ -25,7 +25,15 @@ images:list/read).
   stop and ask before upgrading that stack. Everything else proceeds without asking.
 - **Always upgrade whole stacks** (`compose pull && compose up -d`, or Arcane's project `pull` + `up`), never single
   services or images.
-- **Arcane cannot update itself, its agent, or traefik** under podman. Do those over SSH.
+- **Arcane cannot update itself or its agent**, so both are Quadlets (below).
+- **Quadlet stacks** (`<stack>/*.container`, run with `~/sycamore/quadlet.sh`) are invisible to Arcane's update
+  check and are upgraded by `podman auto-update`. `podman-auto-update.timer` stays disabled so nothing updates before
+  its release notes are read.
+- **Quadlet jobs** are one-shot `.container`s with a same-named `.timer` or `.path` and no `AutoUpdate=` (sycamore:
+  `pocketid-backup`, `downloads-audit`, `docs-build`). Neither Arcane nor `podman auto-update` sees them, because no
+  compose project or running container holds their image. Each run uses whatever image is local, so upgrading one means
+  pulling its image. `pocketid-backup` shares `pocket-id:v2` with the `pocketid` compose service, so upgrading that
+  stack upgrades the job too.
 - Sequence netbird so the management server (racknerd) is upgraded before the peers on sycamore and willow.
 - **If `gluetun` needs recreating** (image update or config change), don't use Arcane for the `arr` stack: several
   services share gluetun's network namespace, so podman refuses to remove it and compose leaves it half-renamed
@@ -44,9 +52,14 @@ images:list/read).
      service with an update or check error: host, project, status, service, image, update type.
    - `scripts/docker-updates.sh ubuntu@racknerd` — racknerd's local digests vs. the registry (looked up from
      samaritan, since racknerd's anonymous Docker Hub quota is often exhausted). `ratelimited` means retry later.
-   - Pinned tags (e.g. `crowdsec:v1.8.1`) never show as updates by digest. List their compose `image:` lines and
-     compare with `gh release list -R <repo> --exclude-pre-releases -L 3`. For netbird's stack, also compare with the
-     pins in upstream's `infrastructure_files/getting-started.sh`, which is where racknerd's pins came from.
+   - Quadlet stacks: `ssh <sycamore|willow> podman auto-update --dry-run --format '{{.Unit}} {{.Image}} {{.Updated}}'`
+     (`pending` means an update is available). Resolve versions with `image-versions.sh` as usual.
+   - Quadlet jobs: `scripts/quadlet-job-updates.sh <sycamore|willow>` prints `current`, `update` or `error` per job
+     image, comparing local digests with the registry.
+   - Pinned tags (e.g. `crowdsec:v1.8.1`) never show as updates by digest. List their compose `image:` lines and Quadlet
+     `Image=` lines (e.g. `homer/docs-build.container`'s pandoc) and compare with `gh release list -R <repo>
+     --exclude-pre-releases -L 3`. For netbird's stack, also compare with the pins in upstream's
+     `infrastructure_files/getting-started.sh`, which is where racknerd's pins came from.
 
 2. **Resolve versions.** Arcane only reports digests. `scripts/image-versions.sh <ssh-host> <image>...` prints
    local → registry versions from the `org.opencontainers.image.version` label. Where the label is missing or is a base
@@ -66,6 +79,13 @@ images:list/read).
 5. **Upgrade.**
    - Arcane stacks: `scripts/arcane-deploy.sh <Sycamore|Willow> <project>...` (pull + up, then prints status and
      running/total counts).
+   - Quadlet stacks: `ssh <host> systemctl --user start podman-auto-update.service`, which pulls and restarts
+     every unit with `AutoUpdate=registry` and rolls back one that fails to start. Check the result with
+     `journalctl --user -u podman-auto-update.service`.
+   - Quadlet jobs: `ssh <host> podman pull -q <image>`, then run the job once to check it
+     (`systemctl --user start <job>.service`; all three are safe to run off-schedule). For a pinned `Image=`, edit
+     the file in the repo, commit, push, `git pull` on the host and pull the new image; pulling on sycamore also
+     triggers `docs-build`.
    - SSH stacks on sycamore/willow (`docker` is only an interactive alias there):
      `ssh <host> 'export PATH=$HOME/.local/bin:$PATH DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock;
      cd ~/sycamore/<path> && docker-compose pull -q && docker-compose up -d'`
@@ -84,7 +104,11 @@ images:list/read).
      200, and `docker exec netbird-crowdsec cscli bouncers list` shows `netbird-proxy` with a fresh `last_pull`.
    - netbird-server runs DB migrations for ~30s after an upgrade; the proxy logs `connection refused` until then.
      Wait and recheck before treating it as a failure.
-   - Arcane: `/api/version` shows the new version; after an agent upgrade both environments are `online`.
+   - Quadlet jobs: the manual run's `systemctl --user show <job>.service -p Result --value` is `success`, and
+     `quadlet.sh ps` in the stack's directory shows its trigger `linked` and `active`. `docs-build` should leave
+     `docs.home.makalila.org` answering 200.
+   - Arcane: `systemctl --user is-active arcane.service` and the container is `healthy`; `/api/version` shows the new
+     version; after an agent upgrade both environments are `online`.
    - On sycamore and willow, no container is stuck in `Created`: `ssh <host> 'podman ps -a --filter status=created
      --format "{{.Names}}"'`. For each one, check its map with `podman inspect <c> --format
      '{{json .HostConfig.IDMappings}}'`: a lone `1000:0:1` entry is the `keep-id` bug above. Recreate the affected
