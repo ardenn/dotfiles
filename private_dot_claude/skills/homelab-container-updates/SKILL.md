@@ -30,10 +30,11 @@ images:list/read).
   check and are upgraded by `podman auto-update`. `podman-auto-update.timer` stays disabled so nothing updates before
   its release notes are read.
 - **Quadlet jobs** are one-shot `.container`s with a same-named `.timer` or `.path` and no `AutoUpdate=` (sycamore:
-  `pocketid-backup`, `downloads-audit`, `docs-build`). Neither Arcane nor `podman auto-update` sees them, because no
-  compose project or running container holds their image. Each run uses whatever image is local, so upgrading one means
-  pulling its image. `pocketid-backup` shares `pocket-id:v2` with the `pocketid` compose service, so upgrading that
-  stack upgrades the job too.
+  `pocketid-backup`, `downloads-audit`, `docs-build`, `readeck/autotag`). Neither Arcane nor `podman auto-update` sees
+  them, because no compose project or running container holds their image. Each run uses whatever image is local, so
+  upgrading one means pulling its image. `pocketid-backup` shares `pocket-id:v2` with the `pocketid` compose service, so
+  upgrading that stack upgrades the job too. `downloads-audit` and `autotag` share `python:3.13-alpine`, so one pull
+  upgrades both.
 - Sequence netbird so the management server (racknerd) is upgraded before the peers on sycamore and willow.
 - **If `gluetun` needs recreating** (image update or config change), don't use Arcane for the `arr` stack: several
   services share gluetun's network namespace, so podman refuses to remove it and compose leaves it half-renamed
@@ -83,9 +84,9 @@ images:list/read).
      every unit with `AutoUpdate=registry` and rolls back one that fails to start. Check the result with
      `journalctl --user -u podman-auto-update.service`.
    - Quadlet jobs: `ssh <host> podman pull -q <image>`, then run the job once to check it
-     (`systemctl --user start <job>.service`; all three are safe to run off-schedule). For a pinned `Image=`, edit
-     the file in the repo, commit, push, `git pull` on the host and pull the new image; pulling on sycamore also
-     triggers `docs-build`.
+     (`systemctl --user start <job>.service`; all four are safe to run off-schedule; `autotag` only labels bookmarks
+     it hasn't tried before). For a pinned `Image=`, edit the file in the repo, commit, push, `git pull` on the host
+     and pull the new image; pulling on sycamore also triggers `docs-build`.
    - SSH stacks on sycamore/willow (`docker` is only an interactive alias there):
      `ssh <host> 'export PATH=$HOME/.local/bin:$PATH DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock;
      cd ~/sycamore/<path> && docker-compose pull -q && docker-compose up -d'`
