@@ -1,0 +1,18 @@
+{{- if eq .chezmoi.os "linux" -}}
+{{- if eq .machineType "workstation" -}}
+#!/bin/bash
+# Make chrome-profile-router the default handler for web links.
+set -e
+
+if ! command -v google-chrome >/dev/null; then
+    echo "google-chrome not installed; leaving the default browser alone"
+    exit 0
+fi
+
+update-desktop-database "$HOME/.local/share/applications"
+xdg-settings set default-web-browser chrome-profile-router.desktop
+xdg-mime default chrome-profile-router.desktop \
+    text/html application/xhtml+xml x-scheme-handler/http x-scheme-handler/https
+echo "Default browser set to chrome-profile-router"
+{{- end }}
+{{- end }}

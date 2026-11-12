@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Chrome Profile Router
+Comment=Open links in the matching Chrome profile
+Exec=chrome-profile-router %U
+Icon=google-chrome
+Terminal=false
+NoDisplay=true
+StartupNotify=true
+Categories=Network;WebBrowser;
+MimeType=text/html;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;

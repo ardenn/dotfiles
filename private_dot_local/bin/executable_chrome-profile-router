@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Open links in the Chrome profile that owns them. Registered as the default web browser via
+# chrome-profile-router.desktop; anything not matched by WORK_HOSTS opens in the personal profile.
+set -euo pipefail
+
+WORK_ACCOUNT_DOMAIN="namiri.tech"
+WORK_HOSTS=(claude.ai claude.com anthropic.com)
+
+# Resolve the profile directory signed in to the work account, so this survives profile renumbering.
+work_profile() {
+  python3 -I - "$HOME/.config/google-chrome/Local State" "$WORK_ACCOUNT_DOMAIN" <<'PY' 2>/dev/null || true
+import json, sys
+cache = json.load(open(sys.argv[1]))["profile"]["info_cache"]
+print(next(d for d, p in cache.items() if p.get("user_name", "").endswith("@" + sys.argv[2])))
+PY
+}
+
+is_work_url() {
+  local host="${1#*://}"
+  [[ "$host" == "$1" ]] && return 1
+  host="${host%%[/?#]*}"; host="${host##*@}"; host="${host%%:*}"; host="${host,,}"
+  local h
+  for h in "${WORK_HOSTS[@]}"; do
+    [[ "$host" == "$h" || "$host" == *".$h" ]] && return 0
+  done
+  return 1
+}
+
+[[ $# -eq 0 ]] && exec google-chrome --profile-directory=Default
+
+work=""
+for url in "$@"; do
+  if is_work_url "$url"; then
+    work="${work:-$(work_profile)}"
+    google-chrome --profile-directory="${work:-Default}" "$url"
+  else
+    google-chrome --profile-directory=Default "$url"
+  fi
+done
