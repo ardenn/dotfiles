@@ -25,7 +25,18 @@ images:list/read).
   stop and ask before upgrading that stack. Everything else proceeds without asking.
 - **Always upgrade whole stacks** (`compose pull && compose up -d`, or Arcane's project `pull` + `up`), never single
   services or images.
-- **Arcane cannot update itself or its agent**, so both are Quadlets (below).
+- **Arcane cannot update itself or its agent**, so both are Quadlets (below): `arcane/arcane.container`
+  (`ghcr.io/getarcaneapp/manager:v3`) on sycamore and `willow/arcaneagent/arcane-agent.container`
+  (`ghcr.io/getarcaneapp/agent:v3`) on willow. Since v3:
+  - Every Arcane setting is an `ARCANE_`-prefixed env var, in the Quadlet or the host-only `.env` beside it. Arcane
+    refuses to start if it finds a legacy unprefixed name, so check new settings from release notes against this.
+  - The agent has no HTTP listener, published port or health check; it only dials out to the manager. It connects over
+    gRPC through Traefik's `arcane-grpc` router (gRPC content type → `h2c://arcane:3552`) and falls back to websocket
+    after 10s if that route breaks.
+  - The API calls environments `agents` (`/api/agents/{id}/...`); `scripts/arcane-*.sh` already use the v3 routes.
+  - If the agent can't authenticate after an upgrade (Willow stays `pending`, manager logs ask for re-enrolment), the
+    user generates a new enrolment token in the Arcane UI and puts it in willow's `.env` as `ARCANE_AGENT_TOKEN`.
+    Don't create tokens through the API yourself.
 - **Quadlet stacks** (`<stack>/*.container`, run with `~/sycamore/quadlet.sh`) are invisible to Arcane's update
   check and are upgraded by `podman auto-update`. `podman-auto-update.timer` stays disabled so nothing updates before
   its release notes are read.
@@ -61,6 +72,9 @@ images:list/read).
      `Image=` lines (e.g. `homer/docs-build.container`'s pandoc) and compare with `gh release list -R <repo>
      --exclude-pre-releases -L 3`. For netbird's stack, also compare with the pins in upstream's
      `infrastructure_files/getting-started.sh`, which is where racknerd's pins came from.
+   - Major-version tags (`manager:v3`, `agent:v3`, `pocket-id:v2`, `immich-server:v3`, …) only update within that
+     major. Check `gh release list` for a new major (e.g. `getarcaneapp/arcane`) and treat moving to it as a breaking
+     upgrade: read the notes, present the plan and wait for approval.
 
 2. **Resolve versions.** Arcane only reports digests. `scripts/image-versions.sh <ssh-host> <image>...` prints
    local → registry versions from the `org.opencontainers.image.version` label. Where the label is missing or is a base
@@ -109,7 +123,10 @@ images:list/read).
      `quadlet.sh ps` in the stack's directory shows its trigger `linked` and `active`. `docs-build` should leave
      `docs.home.makalila.org` answering 200.
    - Arcane: `systemctl --user is-active arcane.service` and the container is `healthy`; `/api/version` shows the new
-     version; after an agent upgrade both environments are `online`.
+     version. After an agent upgrade, `arcane-agent.service` is `active` on willow, its log shows `Agent tunnel
+     connected` with `transport=grpc` (websocket means Traefik's `arcane-grpc` route is broken), and both environments
+     are `online` in `GET /api/agents`. Back up `~/containers/arcane` on each host before a major upgrade, since
+     Arcane's database migrations are one-way.
    - On sycamore and willow, no container is stuck in `Created`: `ssh <host> 'podman ps -a --filter status=created
      --format "{{.Names}}"'`. For each one, check its map with `podman inspect <c> --format
      '{{json .HostConfig.IDMappings}}'`: a lone `1000:0:1` entry is the `keep-id` bug above. Recreate the affected
